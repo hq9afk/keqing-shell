@@ -39,7 +39,4 @@ QtObject {
     // Grid — source of truth for panel size; change these to resize the whole panel
     readonly property int imagesPerRow: 7
 
-    // Regions
-    readonly property int maxColumns: 2
-
 }

@@ -13,7 +13,6 @@ QtObject {
     property var animatedColumns: ({})
     property string animatedDir: Quickshell.env("HOME") + "/Videos"
     property bool animatedEnabled: false
-    property bool loaded: false
     property Process animatedFileProc: Process {
         id: animatedFileProc
 
@@ -85,8 +84,6 @@ done`
             root.animatedWallpapers = Object.assign({}, cacheAdapter.animatedWallpapers || {});
             root.staticColumns = Object.assign({}, cacheAdapter.staticColumns || {});
             root.animatedColumns = Object.assign({}, cacheAdapter.animatedColumns || {});
-            root.clampColumns(root.staticColumns, root.setStaticColumns);
-            root.clampColumns(root.animatedColumns, root.setAnimatedColumns);
             root.animatedEnabled = cacheAdapter.animatedEnabled || false;
             if (cacheAdapter.animatedDir !== "")
                 root.animatedDir = cacheAdapter.animatedDir;
@@ -127,6 +124,7 @@ done`
 
         target: ColorSchemeService
     }
+    property bool loaded: false
     property Process mkdirProc: Process {
         id: mkdirProc
 
@@ -221,12 +219,6 @@ fi
 
     signal staticWallpaperChanged(string screenName, string path)
 
-    function clampColumns(columnsMap, setter) {
-        var screens = Object.keys(columnsMap);
-        for (var i = 0; i < screens.length; i++)
-            if (columnsMap[screens[i]] > WallpaperConfig.maxColumns)
-                setter(screens[i], columnsMap[screens[i]]);
-    }
     function optimizeAnimatedWallpaper(path) {
         if (!path)
             return;
@@ -308,7 +300,7 @@ fi
         staticFileProc.running = true;
     }
     function setAnimatedColumns(screenName, n) {
-        var clamped = Math.max(1, Math.min(WallpaperConfig.maxColumns, n));
+        var clamped = Math.max(1, n);
         var updatedCols = Object.assign({}, animatedColumns);
         updatedCols[screenName] = clamped;
         animatedColumns = updatedCols;
@@ -350,7 +342,7 @@ fi
             root.optimizeAnimatedWallpaper(path);
     }
     function setStaticColumns(screenName, n) {
-        var clamped = Math.max(1, Math.min(WallpaperConfig.maxColumns, n));
+        var clamped = Math.max(1, n);
         var updatedCols = Object.assign({}, staticColumns);
         updatedCols[screenName] = clamped;
         staticColumns = updatedCols;

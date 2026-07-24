@@ -10,15 +10,25 @@ import qs.config
 Item {
     id: controlRow
 
+    property int columnCount: 1
+    property bool fillModeSupported: true
     property var fillModes: ({})
     property string selectedScreen: ""
     property var wallpapers: ({})
 
+    signal columnCountChangeRequested(int n)
     signal fillModeChanged(string mode)
     signal wallpaperRemoved
 
     height: WallpaperConfig.controlRowHeight
 
+    CountStepper {
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        value: controlRow.columnCount
+
+        onValueChangeRequested: n => controlRow.columnCountChangeRequested(n)
+    }
     Rectangle {
         anchors.centerIn: parent
         border.color: Qt.rgba(1, 0.3, 0.3, 0.5)
@@ -58,7 +68,7 @@ Item {
         activeValue: controlRow.fillModes[controlRow.selectedScreen] ?? "crop"
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        disabled: !controlRow.wallpapers[controlRow.selectedScreen]
+        disabled: !controlRow.fillModeSupported || !controlRow.wallpapers[controlRow.selectedScreen]
         height: WallpaperConfig.controlRowHeight
         labelRole: "label"
         model: WallpaperConfig.fillModes

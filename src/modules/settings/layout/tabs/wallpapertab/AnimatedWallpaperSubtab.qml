@@ -8,7 +8,6 @@ import qs.service
 import qs.modules.settings
 import qs.modules.settings.layout.tabs.wallpapertab
 import qs.modules.wallpaper
-import qs.config
 
 Item {
     id: root
@@ -36,65 +35,23 @@ Item {
         return screens;
     }
 
-    onSelectedScreenChanged: root.selectedColumn = 0
-
     ColumnLayout {
         id: colLayout
 
         anchors.fill: parent
         spacing: WallpaperConfig.columnSpacing
 
-        Row {
-            id: monitorRow
-
+        RegionRow {
             Layout.fillWidth: true
             Layout.preferredHeight: WallpaperConfig.controlRowHeight
-            spacing: WallpaperConfig.dropdownBtnSpacing
-
-            Repeater {
-                model: root.sortedScreens
-
-                delegate: Rectangle {
-                    required property var modelData
-
-                    border.color: root.selectedScreen === modelData.name ? ColorConfig.accentAlt : "transparent"
-                    border.width: SettingsConfig.selectorBorderWidth
-                    color: ColorConfig.lavenderAlpha20
-                    height: WallpaperConfig.controlRowHeight
-                    radius: GlobalConfig.radiusSm
-                    width: (monitorRow.width - (root.sortedScreens.length - 1) * monitorRow.spacing) / Math.max(1, root.sortedScreens.length)
-
-                    Behavior on border.color {
-                        ColorAnimation {
-                            duration: SettingsConfig.quickColorAnimMs
-                        }
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: ColorConfig.text
-                        font.family: FontConfig.fontFamily
-                        font.pixelSize: FontConfig.fontSettingsBody
-                        text: modelData.name
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: root.selectedScreen = parent.modelData.name
-                    }
-                }
-            }
-        }
-        RegionPicker {
-            Layout.fillWidth: true
-            columns: WallpaperService.animatedColumns[root.selectedScreen] ?? 1
+            columnsMap: WallpaperService.animatedColumns
+            screens: root.sortedScreens
             selectedColumn: root.selectedColumn
+            selectedScreen: root.selectedScreen
 
-            onColumnSelected: index => root.selectedColumn = index
-            onColumnsRequested: n => {
-                WallpaperService.setAnimatedColumns(root.selectedScreen, n);
-                root.selectedColumn = 0;
+            onRegionSelected: (screenName, columnIndex) => {
+                root.selectedScreen = screenName;
+                root.selectedColumn = columnIndex;
             }
         }
         DirBar {
@@ -108,46 +65,22 @@ Item {
             onDirChangeRequested: path => WallpaperService.setAnimatedDir(path)
             onEscapePressed: {}
         }
-        Item {
+        ControlRow {
+            id: controlRow
+
             Layout.fillWidth: true
             Layout.preferredHeight: WallpaperConfig.controlRowHeight
+            columnCount: WallpaperService.animatedColumns[root.selectedScreen] ?? 1
+            fillModeSupported: false
+            selectedScreen: root.selectedScreen
+            wallpapers: root.selectedVideoMap
 
-            Rectangle {
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                border.color: Qt.rgba(1, 0.3, 0.3, 0.5)
-                border.width: SettingsConfig.hairlineBorderWidth
-                color: removeMa.containsMouse ? "#44FF5555" : "transparent"
-                height: WallpaperConfig.controlRowHeight - SettingsConfig.groupContentSpacingSm
-                radius: GlobalConfig.radiusSm
-                visible: !!root.selectedVideoMap[root.selectedScreen]
-                width: removeLabel.implicitWidth + WallpaperConfig.dropdownBtnPadding
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: SettingsConfig.quickColorAnimMs
-                    }
-                }
-
-                Text {
-                    id: removeLabel
-
-                    anchors.centerIn: parent
-                    color: Qt.rgba(1, 0.4, 0.4, 1)
-                    font.family: FontConfig.fontFamily
-                    font.pixelSize: FontConfig.fontSettingsBody
-                    text: "Remove"
-                }
-                MouseArea {
-                    id: removeMa
-
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    hoverEnabled: true
-
-                    onClicked: WallpaperService.removeAnimatedWallpaper(root.selectedScreen, root.selectedColumn)
-                }
+            onColumnCountChangeRequested: n => {
+                WallpaperService.setAnimatedColumns(root.selectedScreen, n);
+                if (root.selectedColumn >= n)
+                    root.selectedColumn = n - 1;
             }
+            onWallpaperRemoved: WallpaperService.removeAnimatedWallpaper(root.selectedScreen, root.selectedColumn)
         }
         ImageGrid {
             Layout.fillHeight: true

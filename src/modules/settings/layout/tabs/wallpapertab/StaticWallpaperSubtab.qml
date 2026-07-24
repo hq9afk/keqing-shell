@@ -8,7 +8,6 @@ import qs.service
 import qs.modules.settings
 import qs.modules.settings.layout.tabs.wallpapertab
 import qs.modules.wallpaper
-import qs.config
 
 Item {
     id: root
@@ -42,65 +41,23 @@ Item {
         return screens;
     }
 
-    onSelectedScreenChanged: root.selectedColumn = 0
-
     ColumnLayout {
         id: colLayout
 
         anchors.fill: parent
         spacing: WallpaperConfig.columnSpacing
 
-        Row {
-            id: monitorRow
-
+        RegionRow {
             Layout.fillWidth: true
             Layout.preferredHeight: WallpaperConfig.controlRowHeight
-            spacing: WallpaperConfig.dropdownBtnSpacing
-
-            Repeater {
-                model: root.sortedScreens
-
-                delegate: Rectangle {
-                    required property var modelData
-
-                    border.color: root.selectedScreen === modelData.name ? ColorConfig.accentAlt : "transparent"
-                    border.width: SettingsConfig.selectorBorderWidth
-                    color: ColorConfig.lavenderAlpha20
-                    height: WallpaperConfig.controlRowHeight
-                    radius: GlobalConfig.radiusSm
-                    width: (monitorRow.width - (root.sortedScreens.length - 1) * monitorRow.spacing) / Math.max(1, root.sortedScreens.length)
-
-                    Behavior on border.color {
-                        ColorAnimation {
-                            duration: SettingsConfig.quickColorAnimMs
-                        }
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: ColorConfig.text
-                        font.family: FontConfig.fontFamily
-                        font.pixelSize: FontConfig.fontSettingsBody
-                        text: modelData.name
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: root.selectedScreen = parent.modelData.name
-                    }
-                }
-            }
-        }
-        RegionPicker {
-            Layout.fillWidth: true
-            columns: WallpaperService.staticColumns[root.selectedScreen] ?? 1
+            columnsMap: WallpaperService.staticColumns
+            screens: root.sortedScreens
             selectedColumn: root.selectedColumn
+            selectedScreen: root.selectedScreen
 
-            onColumnSelected: index => root.selectedColumn = index
-            onColumnsRequested: n => {
-                WallpaperService.setStaticColumns(root.selectedScreen, n);
-                root.selectedColumn = 0;
+            onRegionSelected: (screenName, columnIndex) => {
+                root.selectedScreen = screenName;
+                root.selectedColumn = columnIndex;
             }
         }
         DirBar {
@@ -119,10 +76,16 @@ Item {
 
             Layout.fillWidth: true
             Layout.preferredHeight: WallpaperConfig.controlRowHeight
+            columnCount: WallpaperService.staticColumns[root.selectedScreen] ?? 1
             fillModes: root.selectedFillModeMap
             selectedScreen: root.selectedScreen
             wallpapers: root.selectedWallpaperMap
 
+            onColumnCountChangeRequested: n => {
+                WallpaperService.setStaticColumns(root.selectedScreen, n);
+                if (root.selectedColumn >= n)
+                    root.selectedColumn = n - 1;
+            }
             onFillModeChanged: mode => WallpaperService.setStaticFillMode(root.selectedScreen, root.selectedColumn, mode)
             onWallpaperRemoved: WallpaperService.removeStaticWallpaper(root.selectedScreen, root.selectedColumn)
         }
