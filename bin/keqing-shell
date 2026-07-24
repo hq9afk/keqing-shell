@@ -101,12 +101,16 @@ matrix()        { _ipc matrix; }
 overview()      { _ipc overview; }
 settings()      { _ipc settings; }
 visualizer()    { _ipc visualizer; }
+start-locked() {
+    _check_installed
+    _qs -d >/dev/null 2>&1
+    local _sentinel="/tmp/keqing-shell-started"
+    [[ -f "$_sentinel" ]] || { touch "$_sentinel"; _ipc lock; }
+}
 
 [[ $# -eq 0 ]] && {
     _check_installed
     _qs -d >/dev/null 2>&1
-    _sentinel="/tmp/keqing-shell-started"
-    [[ -f "$_sentinel" ]] || { touch "$_sentinel"; _ipc lock; }
     exit 0
 }
 
