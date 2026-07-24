@@ -19,7 +19,7 @@ QtObject {
 
     // Rain
     readonly property real boldChance: 0.5
-    readonly property real fadeAlpha: 0.08
+    readonly property real fadeAlpha: 0.05
     readonly property int fallIntervalMs: 45
     readonly property string glyphPool: {
         var katakana = "";

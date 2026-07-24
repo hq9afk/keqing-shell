@@ -110,6 +110,9 @@ void MatrixGrid::geometryChange(const QRectF &newGeometry,
                                 const QRectF &oldGeometry) {
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 
+    if (newGeometry.size() == oldGeometry.size())
+        return; // pure move — no dimension change, nothing to do
+
     if (m_cellWidth <= 0 || m_cellHeight <= 0)
         return;
 
@@ -164,19 +167,43 @@ void MatrixGrid::rebuildGrid() {
     update();
 }
 
+void MatrixGrid::decayBuffer() {
+    // Linear, subtractive alpha decay on the premultiplied buffer.
+    const int alphaStep =
+        std::clamp(static_cast<int>(255 * m_fadeAlpha), 1, 255);
+
+    const int height = m_buffer.height();
+    const int width = m_buffer.width();
+    for (int y = 0; y < height; y++) {
+        auto *line = reinterpret_cast<QRgb *>(m_buffer.scanLine(y));
+        for (int x = 0; x < width; x++) {
+            const QRgb pixel = line[x];
+            const int oldAlpha = qAlpha(pixel);
+            if (oldAlpha == 0)
+                continue;
+
+            const int newAlpha = std::max(0, oldAlpha - alphaStep);
+            if (newAlpha == 0) {
+                line[x] = 0;
+                continue;
+            }
+
+            // Rescale premultiplied channels to match the new alpha.
+            line[x] = qRgba(qRed(pixel) * newAlpha / oldAlpha,
+                            qGreen(pixel) * newAlpha / oldAlpha,
+                            qBlue(pixel) * newAlpha / oldAlpha, newAlpha);
+        }
+    }
+}
+
 void MatrixGrid::onTick() {
     if (m_buffer.isNull() || m_columns.empty())
         return;
 
+    decayBuffer();
+
     QPainter painter(&m_buffer);
     painter.setRenderHint(QPainter::TextAntialiasing, false);
-
-    // DestinationIn decays existing alpha
-    painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-    const int residualAlpha =
-        static_cast<int>(255 * std::clamp(1.0 - m_fadeAlpha, 0.0, 1.0));
-    painter.fillRect(m_buffer.rect(), QColor(0, 0, 0, residualAlpha));
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     QFont regularFont = m_font;
     regularFont.setBold(false);

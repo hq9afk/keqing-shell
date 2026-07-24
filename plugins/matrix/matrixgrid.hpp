@@ -108,6 +108,7 @@ class MatrixGrid : public QQuickItem {
     };
 
     void rebuildGrid();
+    void decayBuffer();
     qreal startDrop() const;
     QChar randomGlyph() const;
 
