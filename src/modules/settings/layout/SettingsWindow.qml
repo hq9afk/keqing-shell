@@ -221,18 +221,24 @@ PanelWindow {
                     }
                 }
             }
+            NavRail {
+                id: navRail
+
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.top: parent.top
+                expanded: card.width > SettingsConfig.navRailCollapseBreakpoint
+                tabDefs: root.tabDefs
+            }
             RowLayout {
-                anchors.fill: parent
+                anchors.bottom: parent.bottom
+                anchors.left: navRail.right
+                anchors.leftMargin: SettingsConfig.windowRowSpacing
                 anchors.margins: SettingsConfig.windowContentMargins
+                anchors.right: parent.right
+                anchors.top: parent.top
                 spacing: SettingsConfig.windowRowSpacing
 
-                NavRail {
-                    id: navRail
-
-                    Layout.fillHeight: true
-                    expanded: card.width > SettingsConfig.navRailCollapseBreakpoint
-                    tabDefs: root.tabDefs
-                }
                 Rectangle {
                     Layout.fillHeight: true
                     color: ColorConfig.textAlpha08
