@@ -21,6 +21,18 @@ Scope {
                 return;
             SettingsService.setBarLoaderOpen(screenName, !SettingsService.barLoaderOpen(screenName));
         }
+        function toggleAll() {
+            var screens = Quickshell.screens;
+            var anyOpen = false;
+            for (var i = 0; i < screens.length; i++) {
+                if (SettingsService.barLoaderOpen(screens[i].name)) {
+                    anyOpen = true;
+                    break;
+                }
+            }
+            for (var j = 0; j < screens.length; j++)
+                SettingsService.setBarLoaderOpen(screens[j].name, !anyOpen);
+        }
 
         target: "bar"
     }

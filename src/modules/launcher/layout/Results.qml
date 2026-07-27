@@ -190,7 +190,11 @@ RowLayout {
                         horizontalAlignment: Text.AlignLeft
                         maximumLineCount: 1
                         opacity: LauncherConfig.entrySubtitleOpacity
-                        text: entry.modelData.path || ""
+                        text: {
+                            var p = entry.modelData.path || "";
+                            var home = Quickshell.env("HOME") || "";
+                            return home && (p === home || p.startsWith(home + "/")) ? "~" + p.slice(home.length) : p;
+                        }
                         visible: textBox.hasPath
                         y: LauncherConfig.entrySubtitleOffsetY
                     }

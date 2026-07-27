@@ -45,8 +45,11 @@ ModuleLoader {
     }
 
     IpcHandler {
-        function toggle(global) {
-            root.toggle(!!global);
+        function toggle() {
+            root.toggle(false);
+        }
+        function toggleGlobal() {
+            root.toggle(true);
         }
 
         target: "launcher"

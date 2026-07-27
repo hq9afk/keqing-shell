@@ -31,6 +31,7 @@ cat <<'EOF'
     IPC:
         ipc                 Show all available IPC routes
         bar                 Toggle bar (focused monitor)
+        bar-all             Toggle bar (all monitors)
         controlcenter       Toggle control center
         launcher            Toggle launcher
         lock                Toggle lock screen
@@ -100,7 +101,8 @@ track() {
     heaptrack quickshell -c keqing-shell
 }
 ipc()           { _ipc; }
-bar()           { _ipc bar; }
+bar()           { _ipc bar toggle; }
+bar-all()       { _ipc bar toggleAll; }
 controlcenter() { _ipc controlcenter; }
 launcher()      { _ipc launcher; }
 lock()          { _ipc lock; }
