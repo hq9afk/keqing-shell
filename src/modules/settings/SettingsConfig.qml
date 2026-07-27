@@ -29,7 +29,7 @@ QtObject {
     readonly property int navRailCollapsedWidth: 64
     readonly property int navRailContentSpacing: 12
     readonly property int navRailCopiedFeedbackMs: 1500
-    readonly property int navRailExpandedWidth: 190
+    readonly property int navRailExpandedWidth: 200
     readonly property int navRailFabContentSpacing: 8
     readonly property int navRailFabHeight: 34
     readonly property real navRailInactiveIconOpacity: 0.75
