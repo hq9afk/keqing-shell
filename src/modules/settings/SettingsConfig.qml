@@ -24,9 +24,10 @@ QtObject {
 
     // NavRail
     readonly property int navRailAvatarRowLeftMargin: 4
-    readonly property int navRailAvatarSize: 36
+    readonly property int navRailAvatarRowTopMargin: 6
+    readonly property int navRailAvatarSize: 44
     readonly property int navRailCollapsedWidth: 64
-    readonly property int navRailContentSpacing: 10
+    readonly property int navRailContentSpacing: 12
     readonly property int navRailCopiedFeedbackMs: 1500
     readonly property int navRailExpandedWidth: 190
     readonly property int navRailFabContentSpacing: 8
@@ -37,9 +38,9 @@ QtObject {
     readonly property int navRailItemHeight: 36
     readonly property int navRailItemLeftMargin: 10
     readonly property int navRailItemRightMargin: 8
-    readonly property int navRailItemSpacing: 2
+    readonly property int navRailItemSpacing: 4
     readonly property int navRailListTopMargin: 4
-    readonly property int navRailPadding: 10
+    readonly property int navRailPadding: 14
     readonly property int navRailTightSpacing: 2
     readonly property int navRailUptimeFontSizeAdjust: -3
     readonly property int navRailUsernameFontSizeAdjust: -1

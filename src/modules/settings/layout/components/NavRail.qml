@@ -55,6 +55,7 @@ Rectangle {
         RowLayout {
             Layout.fillWidth: true
             Layout.leftMargin: SettingsConfig.navRailAvatarRowLeftMargin
+            Layout.topMargin: SettingsConfig.navRailAvatarRowTopMargin
             spacing: SettingsConfig.navRailContentSpacing
 
             RoundImage {
