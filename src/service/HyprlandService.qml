@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 pragma Singleton
 
 import QtQuick
+import Quickshell
 import Quickshell.Hyprland
 
 QtObject {
@@ -36,7 +37,9 @@ QtObject {
     signal monitorsChanged
 
     Component.onCompleted: {
-        Hyprland.refreshWorkspaces();
-        Hyprland.refreshToplevels();
+        if (Quickshell.env("XDG_CURRENT_DESKTOP") === "Hyprland") {
+            Hyprland.refreshWorkspaces();
+            Hyprland.refreshToplevels();
+        }
     }
 }

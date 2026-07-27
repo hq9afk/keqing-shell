@@ -1,8 +1,8 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQml.Models
 import Quickshell
-import Quickshell.Hyprland
 
 import qs.modules.bar
 import qs.modules.bar.layout.components
@@ -12,24 +12,55 @@ import qs.config
 WidgetCapsule {
     id: root
 
-    readonly property int displayActiveId: {
-        var m = Hyprland.monitorFor(screen);
-        return m && m.activeWorkspace ? m.activeWorkspace.id : -1;
-    }
     readonly property var workspaces: {
-        var m = Hyprland.monitorFor(screen);
-        if (!m)
-            return [];
-        var mName = m.name;
-        return WorkspaceService.allWorkspaces.filter(w => {
-            var rule = WorkspaceService.wsRuleMonitor[w.id];
-            return rule ? rule === mName : w.monitor === m;
-        });
+        CompositorWorkspaceService.rev;
+        return CompositorWorkspaceService.pillsForScreen(screen);
     }
 
     implicitWidth: layout.implicitWidth + BarConfig.widgetContentPaddingH
     panelName: "overview"
 
+    function syncPillModel(model, pills) {
+        for (var i = model.count - 1; i >= 0; i--) {
+            var id = model.get(i).pillId;
+            if (!pills.some(p => p.id === id))
+                model.remove(i);
+        }
+        for (var idx = 0; idx < pills.length; idx++) {
+            var p = pills[idx];
+            var curIdx = -1;
+            for (var j = 0; j < model.count; j++) {
+                if (model.get(j).pillId === p.id) {
+                    curIdx = j;
+                    break;
+                }
+            }
+            if (curIdx === -1) {
+                model.insert(idx, {
+                    "pillId": p.id,
+                    "active": p.active === true,
+                    "occupied": p.occupied === true,
+                    "urgent": p.urgent === true
+                });
+            } else {
+                if (curIdx !== idx)
+                    model.move(curIdx, idx, 1);
+                if (model.get(idx).active !== (p.active === true))
+                    model.setProperty(idx, "active", p.active === true);
+                if (model.get(idx).occupied !== (p.occupied === true))
+                    model.setProperty(idx, "occupied", p.occupied === true);
+                if (model.get(idx).urgent !== (p.urgent === true))
+                    model.setProperty(idx, "urgent", p.urgent === true);
+            }
+        }
+    }
+
+    Component.onCompleted: root.syncPillModel(pillModel, root.workspaces)
+    onWorkspacesChanged: root.syncPillModel(pillModel, root.workspaces)
+
+    ListModel {
+        id: pillModel
+    }
     Row {
         id: layout
 
@@ -42,17 +73,28 @@ WidgetCapsule {
             anchors.verticalCenter: parent.verticalCenter
             spacing: BarConfig.workspacePillSpacing
 
+            move: Transition {
+                NumberAnimation {
+                    duration: BarConfig.workspaceReorderAnimMs
+                    easing.type: Easing.OutQuad
+                    properties: "x,y"
+                }
+            }
+
             Repeater {
-                model: root.workspaces
+                model: pillModel
 
                 delegate: Rectangle {
                     id: pill
 
+                    required property bool active
                     property bool flashOn: false
-                    readonly property bool isActive: modelData.id === root.displayActiveId
-                    readonly property bool isFlashing: WorkspaceService.flashingIds[modelData.id] === true
-                    readonly property bool isOccupied: WorkspaceService.occupiedIds[modelData.id] === true
-                    required property var modelData
+                    readonly property bool isActive: active === true
+                    readonly property bool isFlashing: urgent === true
+                    readonly property bool isOccupied: occupied === true
+                    required property bool occupied
+                    required property var pillId
+                    required property bool urgent
 
                     anchors.verticalCenter: parent.verticalCenter
                     color: flashOn ? ColorConfig.lavenderAlpha35 : isActive ? ColorConfig.accentAlt : isOccupied ? ColorConfig.accent : ColorConfig.lavenderAlpha35
@@ -68,7 +110,6 @@ WidgetCapsule {
                     Behavior on width {
                         NumberAnimation {
                             duration: BarConfig.workspacePillAnimMs
-                            easing.type: Easing.OutQuad
                         }
                     }
 
@@ -80,7 +121,8 @@ WidgetCapsule {
 
                         loops: 3
 
-                        onFinished: WorkspaceService.flashingIds = ({})
+                        onFinished: if (!CompositorWorkspaceService.isShojiwm)
+                            WorkspaceService.flashingIds = ({})
 
                         PropertyAction {
                             property: "flashOn"
@@ -103,7 +145,7 @@ WidgetCapsule {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
 
-                        onClicked: Quickshell.execDetached(["hyprtile", "fw", pill.modelData.id.toString()])
+                        onClicked: CompositorWorkspaceService.activate(root.screen, pill.pillId)
                     }
                 }
             }

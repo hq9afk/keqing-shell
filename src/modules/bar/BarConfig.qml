@@ -170,4 +170,5 @@ QtObject {
     readonly property int workspacePillAnimMs: 150
     readonly property int workspacePillHeight: 12
     readonly property int workspacePillSpacing: 5
+    readonly property int workspaceReorderAnimMs: 200
 }
