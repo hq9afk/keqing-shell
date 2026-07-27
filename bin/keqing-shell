@@ -30,6 +30,7 @@ cat <<'EOF'
 
     IPC:
         ipc                 Show all available IPC routes
+        bar                 Toggle bar (focused monitor)
         controlcenter       Toggle control center
         launcher            Toggle launcher
         lock                Toggle lock screen
@@ -42,7 +43,13 @@ EOF
 }
 _here() { cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd; }
 _qs()  { MALLOC_ARENA_MAX=2 quickshell -c keqing-shell "$@"; }
-_ipc() { [[ -n "${1:-}" ]] && _qs ipc call "$1" toggle >/dev/null 2>&1 || _qs ipc show; }
+_ipc() {
+    [[ -n "${1:-}" ]] || { _qs ipc show; return; }
+    local _module="$1"; shift
+    local _func="${1:-toggle}"
+    [[ $# -gt 0 ]] && shift
+    _qs ipc call "$_module" "$_func" "$@" >/dev/null 2>&1
+}
 _check_installed() {
     [[ -e /etc/xdg/quickshell/keqing-shell ]] \
         || _die "keqing-shell not installed (missing /etc/xdg/quickshell/keqing-shell)"
@@ -93,6 +100,7 @@ track() {
     heaptrack quickshell -c keqing-shell
 }
 ipc()           { _ipc; }
+bar()           { _ipc bar; }
 controlcenter() { _ipc controlcenter; }
 launcher()      { _ipc launcher; }
 lock()          { _ipc lock; }

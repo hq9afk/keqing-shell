@@ -36,9 +36,9 @@ QtObject {
             root.rev++;
         }
 
-        target: ShojiwmService
+        target: ShojiWMService
     }
-    readonly property bool isShojiwm: Quickshell.env("XDG_CURRENT_DESKTOP") === "ShojiWM"
+    readonly property bool isShojiWM: Quickshell.env("XDG_CURRENT_DESKTOP") === "ShojiWM"
 
     // Bumped on every upstream change; read it inside pillsForScreen() call
     // sites so QML's binding dependency tracking picks up backend updates.
@@ -61,7 +61,7 @@ QtObject {
                 }));
     }
     function _shojiMonitorNameFor(screen) {
-        var view = ShojiwmService.view;
+        var view = ShojiWMService.view;
         if (!view || !view.monitors)
             return null;
         for (var i = 0; i < view.monitors.length; i++) {
@@ -71,7 +71,7 @@ QtObject {
         return view.currentMonitor || null;
     }
     function _shojiPills(screen) {
-        var view = ShojiwmService.view;
+        var view = ShojiWMService.view;
         if (!view || !view.monitors)
             return [];
         var monitorName = root._shojiMonitorNameFor(screen);
@@ -86,18 +86,18 @@ QtObject {
                 }));
     }
     function activate(screen, pillId) {
-        if (root.isShojiwm) {
+        if (root.isShojiWM) {
             var monitor = root._shojiMonitorNameFor(screen);
             if (monitor)
-                ShojiwmService.activateWorkspace(monitor, pillId);
+                ShojiWMService.activateWorkspace(monitor, pillId);
         } else {
             Quickshell.execDetached(["hyprtile", "fw", pillId.toString()]);
         }
     }
     function focusedScreenName() {
-        return root.isShojiwm ? (ShojiwmService.view.currentMonitor || "") : (HyprlandService.focusedMonitor?.name ?? "");
+        return root.isShojiWM ? (ShojiWMService.view.currentMonitor || "") : (HyprlandService.focusedMonitor?.name ?? "");
     }
     function pillsForScreen(screen) {
-        return root.isShojiwm ? root._shojiPills(screen) : root._hyprPills(screen);
+        return root.isShojiWM ? root._shojiPills(screen) : root._hyprPills(screen);
     }
 }

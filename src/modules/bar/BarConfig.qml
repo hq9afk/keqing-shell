@@ -9,12 +9,9 @@ import qs.config
 QtObject {
     // Bar
     readonly property real backgroundOpacity: SettingsService.adapter.bar.backgroundOpacity
-    readonly property int barContentFadeMs: 300
     readonly property int barHeight: SettingsService.adapter.bar.height
-    readonly property real barHiddenOpacity: 0
     readonly property int barMarginH: SettingsService.adapter.bar.marginH
     readonly property int barMarginTop: SettingsService.adapter.bar.marginTop
-    readonly property real barVisibleOpacity: 1
 
     // Battery
     readonly property int batteryBarHeight: 8

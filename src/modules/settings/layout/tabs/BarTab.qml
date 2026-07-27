@@ -13,12 +13,6 @@ import qs.config
 Flickable {
     id: root
 
-    readonly property bool barOverrideEnabled: {
-        if (selectedScreen === "default")
-            return true;
-        var entry = SettingsService.barDisplays[selectedScreen];
-        return entry !== undefined && entry._enabled !== false;
-    }
     property string selectedScreen: "default"
     readonly property var sortedScreens: {
         var screens = [];
@@ -109,47 +103,6 @@ Flickable {
 
                         onClicked: root.selectedScreen = parent.modelData.name
                     }
-                }
-            }
-        }
-        SettingsGroup {
-            title: "Behavior"
-            width: col.width
-
-            RowLayout {
-                visible: root.selectedScreen !== "default"
-                width: parent.width
-
-                Text {
-                    Layout.fillWidth: true
-                    color: ColorConfig.text
-                    font.family: FontConfig.fontFamily
-                    font.pixelSize: FontConfig.fontSettingsBody
-                    opacity: SettingsConfig.labelOpacity
-                    text: "Override default autohide"
-                }
-                Toggle {
-                    active: root.barOverrideEnabled
-
-                    onToggled: SettingsService.setBarOverrideEnabled(root.selectedScreen, !root.barOverrideEnabled)
-                }
-            }
-            RowLayout {
-                visible: root.selectedScreen === "default" || root.barOverrideEnabled
-                width: parent.width
-
-                Text {
-                    Layout.fillWidth: true
-                    color: ColorConfig.text
-                    font.family: FontConfig.fontFamily
-                    font.pixelSize: FontConfig.fontSettingsBody
-                    opacity: SettingsConfig.labelOpacity
-                    text: "Autohide"
-                }
-                Toggle {
-                    active: SettingsService.barValue(root.selectedScreen, "autohideEnabled")
-
-                    onToggled: SettingsService.setBarValue(root.selectedScreen, "autohideEnabled", !active)
                 }
             }
         }

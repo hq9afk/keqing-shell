@@ -17,9 +17,6 @@ QtObject {
             return entry;
         return def;
     }
-    function showBar(screen) {
-        return _cfg(screen).bar !== false;
-    }
     function showDock(screen) {
         return _cfg(screen).dock !== false;
     }

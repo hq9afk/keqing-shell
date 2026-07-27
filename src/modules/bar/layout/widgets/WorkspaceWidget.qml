@@ -17,9 +17,6 @@ WidgetCapsule {
         return CompositorWorkspaceService.pillsForScreen(screen);
     }
 
-    implicitWidth: layout.implicitWidth + BarConfig.widgetContentPaddingH
-    panelName: "overview"
-
     function syncPillModel(model, pills) {
         for (var i = model.count - 1; i >= 0; i--) {
             var id = model.get(i).pillId;
@@ -54,6 +51,9 @@ WidgetCapsule {
             }
         }
     }
+
+    implicitWidth: layout.implicitWidth + BarConfig.widgetContentPaddingH
+    panelName: "overview"
 
     Component.onCompleted: root.syncPillModel(pillModel, root.workspaces)
     onWorkspacesChanged: root.syncPillModel(pillModel, root.workspaces)
@@ -121,7 +121,7 @@ WidgetCapsule {
 
                         loops: 3
 
-                        onFinished: if (!CompositorWorkspaceService.isShojiwm)
+                        onFinished: if (!CompositorWorkspaceService.isShojiWM)
                             WorkspaceService.flashingIds = ({})
 
                         PropertyAction {

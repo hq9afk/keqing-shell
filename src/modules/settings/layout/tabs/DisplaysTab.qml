@@ -126,10 +126,6 @@ Item {
             Repeater {
                 model: [
                     {
-                        label: "Bar",
-                        key: "bar"
-                    },
-                    {
                         label: "Dock",
                         key: "dock"
                     },
