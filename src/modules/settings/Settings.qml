@@ -2,30 +2,48 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 import qs.service
+import qs.modules.core
 import qs.modules.settings.layout
 
-Scope {
+ModuleLoader {
     id: root
 
-    property alias controller: ctrl
+    module: "settings"
 
-    signal closeRequested
+    sourceComp: Component {
+        Scope {
+            id: panel
 
-    QtObject {
-        id: ctrl
+            property alias controller: ctrl
 
-        function close() {
-            settingsWindow.close();
-        }
-        function open() {
-            settingsWindow.open();
+            signal closeRequested
+
+            QtObject {
+                id: ctrl
+
+                function close() {
+                    settingsWindow.close();
+                }
+                function open() {
+                    settingsWindow.open();
+                }
+            }
+            SettingsWindow {
+                id: settingsWindow
+
+                onClosed: panel.closeRequested()
+            }
         }
     }
-    SettingsWindow {
-        id: settingsWindow
 
-        onPanelClosed: root.closeRequested()
+    IpcHandler {
+        function toggle() {
+            root.toggle();
+        }
+
+        target: "settings"
     }
 }

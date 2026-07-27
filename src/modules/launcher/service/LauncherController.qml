@@ -17,6 +17,7 @@ Item {
     property var mode: null
     property string query: ""
     property var resultsModel: directoryBrowser.active ? directoryBrowser.results : filtered.values
+    property string searchRoot: Quickshell.env("HOME")
     readonly property bool subMenuOpen: directoryBrowser.active
 
     signal closeRequested
@@ -111,9 +112,10 @@ Item {
             return s;
         return LauncherConfig.modeDrun;
     }
-    function open() {
+    function open(global) {
         directoryBrowser.close();
 
+        root.searchRoot = global ? "/" : Quickshell.env("HOME");
         root.isOpen = true;
         root.baseMode = LauncherConfig.modeDrun;
         root.mode = LauncherConfig.modeDrun;
@@ -169,6 +171,7 @@ Item {
 
         enabled: root.mode === LauncherConfig.modeDrun
         query: root.effectiveQuery
+        searchRoot: root.searchRoot
     }
     SubMenu {
         id: directoryBrowser

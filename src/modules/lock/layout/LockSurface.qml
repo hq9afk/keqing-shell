@@ -15,7 +15,7 @@ WlSessionLockSurface {
     required property WlSessionLock sessionLock
 
     signal authenticate(string pass)
-    signal closeRequested
+    signal closed
 
     // Wallpaper
     Rectangle {
@@ -72,7 +72,7 @@ WlSessionLockSurface {
                 root.sessionLock.locked = false;
                 if (!root.sessionLock.animDoneEmitted) {
                     root.sessionLock.animDoneEmitted = true;
-                    root.closeRequested();
+                    root.closed();
                 }
             }
         }

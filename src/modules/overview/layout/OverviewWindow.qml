@@ -15,8 +15,7 @@ PanelWindow {
     readonly property string _screenName: root.screen?.name ?? ""
     readonly property int monitorId: Hyprland.monitorFor(root.screen)?.id ?? -1
 
-    signal overviewClosed
-    signal requestClose
+    signal dismissRequested
 
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     WlrLayershell.layer: WlrLayer.Overlay
@@ -48,7 +47,7 @@ PanelWindow {
 
         onTriggered: {
             root.visible = false;
-            root.overviewClosed();
+            root.closed();
         }
     }
     anchors {
@@ -92,7 +91,7 @@ PanelWindow {
 
             onCleared: () => {
                 if (!active)
-                    root.requestClose();
+                    root.dismissRequested();
             }
         }
         Timer {
@@ -122,7 +121,7 @@ PanelWindow {
             if (inX && inY) {
                 mouse.accepted = false;
             } else {
-                root.requestClose();
+                root.dismissRequested();
                 mouse.accepted = true;
             }
         }
@@ -134,7 +133,7 @@ PanelWindow {
         anchors.fill: parent
 
         onRequestClearWorkspace: modifiers => HyprlandManager.clearWorkspace(modifiers)
-        onRequestClose: root.requestClose()
+        onRequestClose: root.dismissRequested()
         onRequestSwitchWorkspace: (position, modifiers) => HyprlandManager.switchToWorkspace(position, modifiers)
     }
     ColumnLayout {
@@ -170,7 +169,7 @@ PanelWindow {
                 monitorId: root.monitorId
                 visible: true
 
-                onRequestClose: root.requestClose()
+                onRequestClose: root.dismissRequested()
             }
         }
     }

@@ -4,8 +4,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 
-import qs.modules.core
-
 import qs.modules.bar
 import qs.modules.controlcenter
 import qs.modules.dock
@@ -35,118 +33,12 @@ ShellRoot {
     Wallpaper {}
 
     // Lazy-Loaded Modules
-    ModuleLoader {
-        id: controlcenter
-
-        module: "controlcenter"
-
-        sourceComp: Component {
-            ControlCenter {}
-        }
-    }
-    ModuleLoader {
-        id: launcher
-
-        module: "launcher"
-
-        sourceComp: Component {
-            Launcher {}
-        }
-    }
-    ModuleLoader {
-        id: lock
-
-        module: "lock"
-
-        sourceComp: Component {
-            Lock {}
-        }
-    }
-    ModuleLoader {
-        id: logout
-
-        module: "logout"
-
-        sourceComp: Component {
-            Logout {}
-        }
-    }
-    ModuleLoader {
-        id: matrix
-
-        module: "matrix"
-
-        sourceComp: Component {
-            Matrix {}
-        }
-    }
-    ModuleLoader {
-        id: overview
-
-        module: "overview"
-
-        sourceComp: Component {
-            Overview {}
-        }
-    }
-    ModuleLoader {
-        id: settings
-
-        module: "settings"
-
-        sourceComp: Component {
-            Settings {}
-        }
-    }
-    ModuleLoader {
-        id: visualizer
-
-        module: "visualizer"
-
-        sourceComp: Component {
-            Visualizer {}
-        }
-    }
-
-    // IPC Handlers
-    ModuleHandler {
-        module: "controlcenter"
-
-        onToggle: controlcenter.toggle()
-    }
-    ModuleHandler {
-        module: "launcher"
-
-        onToggle: launcher.toggle()
-    }
-    ModuleHandler {
-        module: "lock"
-
-        onToggle: lock.toggle()
-    }
-    ModuleHandler {
-        module: "logout"
-
-        onToggle: logout.toggle()
-    }
-    ModuleHandler {
-        module: "settings"
-
-        onToggle: settings.toggle()
-    }
-    ModuleHandler {
-        module: "matrix"
-
-        onToggle: matrix.toggle()
-    }
-    ModuleHandler {
-        module: "overview"
-
-        onToggle: overview.toggle()
-    }
-    ModuleHandler {
-        module: "visualizer"
-
-        onToggle: visualizer.toggle()
-    }
+    ControlCenter {}
+    Launcher {}
+    Lock {}
+    Logout {}
+    Matrix {}
+    Overview {}
+    Settings {}
+    Visualizer {}
 }

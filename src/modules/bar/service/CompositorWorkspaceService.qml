@@ -11,8 +11,13 @@ import qs.modules.bar.service
 QtObject {
     id: root
 
-    readonly property bool isShojiwm: Quickshell.env("XDG_CURRENT_DESKTOP") === "ShojiWM"
+    property var _hyprConn: Connections {
+        function onChanged() {
+            root.rev++;
+        }
 
+        target: HyprlandService
+    }
     property var _hyprWsConn: Connections {
         function onAllWorkspacesChanged() {
             root.rev++;
@@ -26,13 +31,6 @@ QtObject {
 
         target: WorkspaceService
     }
-    property var _hyprConn: Connections {
-        function onChanged() {
-            root.rev++;
-        }
-
-        target: HyprlandService
-    }
     property var _shojiConn: Connections {
         function onChanged() {
             root.rev++;
@@ -40,24 +38,11 @@ QtObject {
 
         target: ShojiwmService
     }
+    readonly property bool isShojiwm: Quickshell.env("XDG_CURRENT_DESKTOP") === "ShojiWM"
 
     // Bumped on every upstream change; read it inside pillsForScreen() call
     // sites so QML's binding dependency tracking picks up backend updates.
     property int rev: 0
-
-    function activate(screen, pillId) {
-        if (root.isShojiwm) {
-            var monitor = root._shojiMonitorNameFor(screen);
-            if (monitor)
-                ShojiwmService.activateWorkspace(monitor, pillId);
-        } else {
-            Quickshell.execDetached(["hyprtile", "fw", pillId.toString()]);
-        }
-    }
-
-    function pillsForScreen(screen) {
-        return root.isShojiwm ? root._shojiPills(screen) : root._hyprPills(screen);
-    }
 
     function _hyprPills(screen) {
         var m = Hyprland.monitorFor(screen);
@@ -75,7 +60,6 @@ QtObject {
                     "urgent": WorkspaceService.flashingIds[w.id] === true
                 }));
     }
-
     function _shojiMonitorNameFor(screen) {
         var view = ShojiwmService.view;
         if (!view || !view.monitors)
@@ -86,7 +70,6 @@ QtObject {
         }
         return view.currentMonitor || null;
     }
-
     function _shojiPills(screen) {
         var view = ShojiwmService.view;
         if (!view || !view.monitors)
@@ -101,5 +84,20 @@ QtObject {
                     "occupied": w.windowCount > 0,
                     "urgent": w.windows.some(win => win.urgent)
                 }));
+    }
+    function activate(screen, pillId) {
+        if (root.isShojiwm) {
+            var monitor = root._shojiMonitorNameFor(screen);
+            if (monitor)
+                ShojiwmService.activateWorkspace(monitor, pillId);
+        } else {
+            Quickshell.execDetached(["hyprtile", "fw", pillId.toString()]);
+        }
+    }
+    function focusedScreenName() {
+        return root.isShojiwm ? (ShojiwmService.view.currentMonitor || "") : (HyprlandService.focusedMonitor?.name ?? "");
+    }
+    function pillsForScreen(screen) {
+        return root.isShojiwm ? root._shojiPills(screen) : root._hyprPills(screen);
     }
 }

@@ -2,42 +2,60 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
+import qs.modules.core
 import qs.modules.matrix.layout
 
-Scope {
+ModuleLoader {
     id: root
 
-    property alias controller: controller
+    module: "matrix"
 
-    signal closeRequested
+    sourceComp: Component {
+        Scope {
+            id: panel
 
-    // Controller
-    Item {
-        id: controller
+            property alias controller: controller
 
-        property bool isOpen: false
+            signal closeRequested
 
-        function close() {
-            isOpen = false;
-        }
-        function open() {
-            isOpen = true;
-        }
-        function toggle() {
-            if (isOpen)
-                close();
-            else
-                open();
+            // Controller
+            Item {
+                id: controller
+
+                property bool isOpen: false
+
+                function close() {
+                    isOpen = false;
+                }
+                function open() {
+                    isOpen = true;
+                }
+                function toggle() {
+                    if (isOpen)
+                        close();
+                    else
+                        open();
+                }
+            }
+
+            // Window
+            MatrixWindow {
+                id: window
+
+                isOpen: controller.isOpen
+
+                onClosed: panel.closeRequested()
+            }
         }
     }
 
-    // Window
-    MatrixWindow {
-        id: window
+    IpcHandler {
+        function toggle() {
+            root.toggle();
+        }
 
-        isOpen: controller.isOpen
-
-        onClosed: root.closeRequested()
+        target: "matrix"
     }
 }

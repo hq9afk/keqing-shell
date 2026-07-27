@@ -63,6 +63,7 @@ QtObject {
             property int marginTop: 10
             property int screenMargin: 20
         }
+        property var barDisplays: ({})
         property JsonObject controlCenter: JsonObject {
             property var cardOrder: []
             property list<var> cards: ["battery", "systemStats", "cpuTemp", "gpuTemp", "media", "volume"]
@@ -110,6 +111,7 @@ QtObject {
         }
         return p;
     }
+    readonly property var barDisplays: adapter.barDisplays || {}
     readonly property string configDir: {
         var xdg = Quickshell.env("XDG_CONFIG_HOME");
         return (xdg || Quickshell.env("HOME") + "/.config") + "/keqing-shell/";
@@ -156,6 +158,22 @@ QtObject {
         };
     }
 
+    function barValue(screenName, key) {
+        if (!screenName || screenName === "default")
+            return adapter.bar[key];
+        var entry = root.barDisplays[screenName];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.bar[key];
+    }
+    function barValueForScreen(screen, key) {
+        if (!screen)
+            return adapter.bar[key];
+        var entry = root.barDisplays[screen.name] !== undefined ? root.barDisplays[screen.name] : root.barDisplays[screen.model];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.bar[key];
+    }
     function displayValue(screenName, key) {
         if (!screenName || screenName === "default")
             return (root.displays["default"] || {})[key] !== false;
@@ -163,6 +181,12 @@ QtObject {
         if (entry && entry._enabled !== false && entry[key] !== undefined)
             return entry[key] !== false;
         return (root.displays["default"] || {})[key] !== false;
+    }
+    function ensureBarScreen(screenName) {
+        var all = JSON.parse(JSON.stringify(root.barDisplays));
+        if (!all[screenName])
+            all[screenName] = {};
+        return all;
     }
     function ensureDisplayScreen(screenName) {
         var all = JSON.parse(JSON.stringify(root.displays));
@@ -208,6 +232,25 @@ QtObject {
     }
     function save() {
         saveTimer.restart();
+    }
+    function setBarOverrideEnabled(screenName, enabled) {
+        if (!root.barDisplays[screenName] && !enabled)
+            return;
+        var all = ensureBarScreen(screenName);
+        all[screenName]._enabled = enabled;
+        adapter.barDisplays = all;
+        save();
+    }
+    function setBarValue(screenName, key, value) {
+        if (!screenName || screenName === "default") {
+            adapter.bar[key] = value;
+            save();
+            return;
+        }
+        var all = ensureBarScreen(screenName);
+        all[screenName][key] = value;
+        adapter.barDisplays = all;
+        save();
     }
     function setControlCenter(obj) {
         if (obj.cards !== undefined)

@@ -263,6 +263,13 @@ void MatrixGrid::onTick() {
 }
 
 QSGNode *MatrixGrid::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) {
+    // Nothing to paint yet (first tick hasn't built a texture) — don't hand
+    // the renderer a node with no texture bound.
+    if (!m_bufferTexture) {
+        delete oldNode;
+        return nullptr;
+    }
+
     auto *node = static_cast<QSGSimpleTextureNode *>(oldNode);
     if (!node) {
         node = new QSGSimpleTextureNode;
@@ -270,10 +277,8 @@ QSGNode *MatrixGrid::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) {
     }
 
     // MatrixGrid owns the texture and replaces it every tick
-    if (m_bufferTexture) {
-        node->setTexture(m_bufferTexture);
-        node->setRect(0, 0, width(), height());
-    }
+    node->setTexture(m_bufferTexture);
+    node->setRect(0, 0, width(), height());
 
     return node;
 }

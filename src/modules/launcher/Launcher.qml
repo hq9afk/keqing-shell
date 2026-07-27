@@ -2,35 +2,53 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
+import qs.modules.core
 import qs.modules.launcher
 import qs.modules.launcher.layout
 import qs.modules.launcher.service
 
-Scope {
+ModuleLoader {
     id: root
 
-    property alias controller: controller
+    module: "launcher"
 
-    signal closeRequested
+    sourceComp: Component {
+        Scope {
+            id: panel
 
-    LauncherController {
-        id: controller
+            property alias controller: controller
 
-        browseRef: window.browseRef
+            signal closeRequested
 
-        onCloseRequested: root.closeRequested()
+            LauncherController {
+                id: controller
+
+                browseRef: window.browseRef
+
+                onCloseRequested: panel.closeRequested()
+            }
+            LauncherWindow {
+                id: window
+
+                launcherRef: controller
+                mode: controller.mode || LauncherConfig.modeDrun
+                resultsModel: controller.resultsModel
+                visible: controller.isOpen
+
+                onDismissRequested: controller.goBack()
+                onEntryActivated: controller.launch(modelData)
+                onQueryEdited: text => controller.query = text
+            }
+        }
     }
-    LauncherWindow {
-        id: window
 
-        launcherRef: controller
-        mode: controller.mode || LauncherConfig.modeDrun
-        resultsModel: controller.resultsModel
-        visible: controller.isOpen
+    IpcHandler {
+        function toggle(global) {
+            root.toggle(!!global);
+        }
 
-        onDismissRequested: controller.goBack()
-        onEntryActivated: controller.launch(modelData)
-        onQueryEdited: text => controller.query = text
+        target: "launcher"
     }
 }

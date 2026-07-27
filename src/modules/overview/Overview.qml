@@ -2,31 +2,49 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
+import qs.modules.core
 import qs.modules.overview.layout
 import qs.modules.overview.service
 
-Scope {
+ModuleLoader {
     id: root
 
-    property alias controller: controller
+    module: "overview"
 
-    signal closeRequested
+    sourceComp: Component {
+        Scope {
+            id: panel
 
-    Component.onCompleted: controller.open()
+            property alias controller: controller
 
-    Item {
-        id: controller
+            signal closeRequested
 
-        function close() {
-            GlobalStates.overviewOpen = false;
-        }
-        function open() {
-            GlobalStates.overviewOpen = true;
+            Component.onCompleted: controller.open()
+
+            Item {
+                id: controller
+
+                function close() {
+                    GlobalStates.overviewOpen = false;
+                }
+                function open() {
+                    GlobalStates.overviewOpen = true;
+                }
+            }
+            OverviewWindow {
+                onClosed: panel.closeRequested()
+                onDismissRequested: panel.controller.close()
+            }
         }
     }
-    OverviewWindow {
-        onOverviewClosed: root.closeRequested()
-        onRequestClose: root.controller.close()
+
+    IpcHandler {
+        function toggle() {
+            root.toggle();
+        }
+
+        target: "overview"
     }
 }

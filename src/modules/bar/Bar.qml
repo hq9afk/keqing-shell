@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 
 import qs.service
@@ -14,6 +15,21 @@ import qs.modules.core
 Scope {
     id: root
 
+    IpcHandler {
+        function toggleAutohide() {
+            var screenName = CompositorWorkspaceService.focusedScreenName();
+            if (!screenName) {
+                SettingsService.adapter.bar.autohideEnabled = !SettingsService.adapter.bar.autohideEnabled;
+                SettingsService.save();
+                return;
+            }
+            var current = SettingsService.barValue(screenName, "autohideEnabled");
+            SettingsService.setBarOverrideEnabled(screenName, true);
+            SettingsService.setBarValue(screenName, "autohideEnabled", !current);
+        }
+
+        target: "bar"
+    }
     Variants {
         model: Quickshell.screens
 
@@ -40,7 +56,7 @@ Scope {
                 PanelWindow {
                     id: win
 
-                    readonly property bool autohide: SettingsService.adapter.bar.autohideEnabled
+                    readonly property bool autohide: SettingsService.barValueForScreen(screenScope.modelData, "autohideEnabled")
                     readonly property bool effectiveShouldShow: !win.autohide || win.shouldShow
                     readonly property int fullHeight: BarConfig.barMarginTop + BarConfig.barHeight
                     readonly property bool panelOpenHere: PanelService.openedScreenName === screenScope.modelData.name || PanelService.closingScreenName === screenScope.modelData.name || (PanelService.getPopupMenuWindow(screenScope.modelData)?.visible ?? false) || ModuleStates.isOpenedFromBarOnScreen(screenScope.modelData.name)

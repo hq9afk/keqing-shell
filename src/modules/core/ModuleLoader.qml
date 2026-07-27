@@ -8,15 +8,18 @@ Item {
     property string module: ""
     required property Component sourceComp
 
-    function toggle() {
+    function toggle(arg) {
         if (loader.active) {
             if (loader.item && loader.item.controller) {
                 loader.item.controller.close();
             }
         } else {
+            root._pendingArg = arg;
             loader.active = true;
         }
     }
+
+    property var _pendingArg: undefined
 
     Loader {
         id: loader
@@ -30,7 +33,7 @@ Item {
                 ModuleStates.setOpen(root.module, false);
         }
         onLoaded: {
-            item.controller.open();
+            item.controller.open(root._pendingArg);
             ModuleStates.setOpen(root.module, true);
         }
 

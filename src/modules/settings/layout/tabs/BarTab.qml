@@ -13,19 +13,25 @@ import qs.config
 Flickable {
     id: root
 
-    readonly property bool overrideEnabled: {
-        if (selectedWidgetScreen === "default")
+    readonly property bool barOverrideEnabled: {
+        if (selectedScreen === "default")
             return true;
-        var entry = SettingsService.allWidgets[selectedWidgetScreen];
+        var entry = SettingsService.barDisplays[selectedScreen];
         return entry !== undefined && entry._enabled !== false;
     }
-    property string selectedWidgetScreen: "default"
+    property string selectedScreen: "default"
     readonly property var sortedScreens: {
         var screens = [];
         for (var i = 0; i < Quickshell.screens.length; i++)
             screens.push(Quickshell.screens[i]);
         screens.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
         return screens;
+    }
+    readonly property bool widgetOverrideEnabled: {
+        if (selectedScreen === "default")
+            return true;
+        var entry = SettingsService.allWidgets[selectedScreen];
+        return entry !== undefined && entry._enabled !== false;
     }
 
     clip: true
@@ -37,11 +43,99 @@ Flickable {
         spacing: SettingsConfig.tabColumnSpacing
         width: root.width
 
+        Row {
+            id: screenSelectorRow
+
+            spacing: SettingsConfig.screenSelectorSpacing
+            width: parent.width
+
+            Rectangle {
+                border.color: root.selectedScreen === "default" ? ColorConfig.accentAlt : "transparent"
+                border.width: SettingsConfig.selectorBorderWidth
+                color: ColorConfig.lavenderAlpha20
+                height: SettingsConfig.screenSelectorHeight
+                radius: SettingsConfig.tileRadius
+                width: (screenSelectorRow.width - root.sortedScreens.length * screenSelectorRow.spacing) / Math.max(1, root.sortedScreens.length + 1)
+
+                Behavior on border.color {
+                    ColorAnimation {
+                        duration: SettingsConfig.quickColorAnimMs
+                    }
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    color: ColorConfig.text
+                    font.family: FontConfig.fontFamily
+                    font.pixelSize: FontConfig.fontSettingsBody
+                    text: "Default"
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: root.selectedScreen = "default"
+                }
+            }
+            Repeater {
+                model: root.sortedScreens
+
+                delegate: Rectangle {
+                    required property var modelData
+
+                    border.color: root.selectedScreen === modelData.name ? ColorConfig.accentAlt : "transparent"
+                    border.width: SettingsConfig.selectorBorderWidth
+                    color: ColorConfig.lavenderAlpha20
+                    height: SettingsConfig.screenSelectorHeight
+                    radius: SettingsConfig.tileRadius
+                    width: (screenSelectorRow.width - root.sortedScreens.length * screenSelectorRow.spacing) / Math.max(1, root.sortedScreens.length + 1)
+
+                    Behavior on border.color {
+                        ColorAnimation {
+                            duration: SettingsConfig.quickColorAnimMs
+                        }
+                    }
+
+                    Text {
+                        anchors.centerIn: parent
+                        color: ColorConfig.text
+                        font.family: FontConfig.fontFamily
+                        font.pixelSize: FontConfig.fontSettingsBody
+                        text: modelData.name
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: root.selectedScreen = parent.modelData.name
+                    }
+                }
+            }
+        }
         SettingsGroup {
             title: "Behavior"
             width: col.width
 
             RowLayout {
+                visible: root.selectedScreen !== "default"
+                width: parent.width
+
+                Text {
+                    Layout.fillWidth: true
+                    color: ColorConfig.text
+                    font.family: FontConfig.fontFamily
+                    font.pixelSize: FontConfig.fontSettingsBody
+                    opacity: SettingsConfig.labelOpacity
+                    text: "Override default autohide"
+                }
+                Toggle {
+                    active: root.barOverrideEnabled
+
+                    onToggled: SettingsService.setBarOverrideEnabled(root.selectedScreen, !root.barOverrideEnabled)
+                }
+            }
+            RowLayout {
+                visible: root.selectedScreen === "default" || root.barOverrideEnabled
                 width: parent.width
 
                 Text {
@@ -53,12 +147,9 @@ Flickable {
                     text: "Autohide"
                 }
                 Toggle {
-                    active: SettingsService.adapter.bar.autohideEnabled
+                    active: SettingsService.barValue(root.selectedScreen, "autohideEnabled")
 
-                    onToggled: {
-                        SettingsService.adapter.bar.autohideEnabled = !active;
-                        SettingsService.save();
-                    }
+                    onToggled: SettingsService.setBarValue(root.selectedScreen, "autohideEnabled", !active)
                 }
             }
         }
@@ -298,77 +389,8 @@ Flickable {
             title: "Widgets"
             width: col.width
 
-            Row {
-                id: widgetScreenRow
-
-                spacing: SettingsConfig.screenSelectorSpacing
-                width: parent.width
-
-                Rectangle {
-                    border.color: root.selectedWidgetScreen === "default" ? ColorConfig.accentAlt : "transparent"
-                    border.width: SettingsConfig.selectorBorderWidth
-                    color: ColorConfig.lavenderAlpha20
-                    height: SettingsConfig.screenSelectorHeight
-                    radius: SettingsConfig.tileRadius
-                    width: (widgetScreenRow.width - root.sortedScreens.length * widgetScreenRow.spacing) / Math.max(1, root.sortedScreens.length + 1)
-
-                    Behavior on border.color {
-                        ColorAnimation {
-                            duration: SettingsConfig.quickColorAnimMs
-                        }
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: ColorConfig.text
-                        font.family: FontConfig.fontFamily
-                        font.pixelSize: FontConfig.fontSettingsBody
-                        text: "Default"
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: root.selectedWidgetScreen = "default"
-                    }
-                }
-                Repeater {
-                    model: root.sortedScreens
-
-                    delegate: Rectangle {
-                        required property var modelData
-
-                        border.color: root.selectedWidgetScreen === modelData.name ? ColorConfig.accentAlt : "transparent"
-                        border.width: SettingsConfig.selectorBorderWidth
-                        color: ColorConfig.lavenderAlpha20
-                        height: SettingsConfig.screenSelectorHeight
-                        radius: SettingsConfig.tileRadius
-                        width: (widgetScreenRow.width - root.sortedScreens.length * widgetScreenRow.spacing) / Math.max(1, root.sortedScreens.length + 1)
-
-                        Behavior on border.color {
-                            ColorAnimation {
-                                duration: SettingsConfig.quickColorAnimMs
-                            }
-                        }
-
-                        Text {
-                            anchors.centerIn: parent
-                            color: ColorConfig.text
-                            font.family: FontConfig.fontFamily
-                            font.pixelSize: FontConfig.fontSettingsBody
-                            text: modelData.name
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: root.selectedWidgetScreen = parent.modelData.name
-                        }
-                    }
-                }
-            }
             RowLayout {
-                visible: root.selectedWidgetScreen !== "default"
+                visible: root.selectedScreen !== "default"
                 width: parent.width
 
                 Text {
@@ -380,27 +402,27 @@ Flickable {
                     text: "Override default layout"
                 }
                 Toggle {
-                    active: root.overrideEnabled
+                    active: root.widgetOverrideEnabled
 
-                    onToggled: SettingsService.setWidgetOverrideEnabled(root.selectedWidgetScreen, !root.overrideEnabled)
+                    onToggled: SettingsService.setWidgetOverrideEnabled(root.selectedScreen, !root.widgetOverrideEnabled)
                 }
             }
             WidgetRow {
-                screenName: root.selectedWidgetScreen
+                screenName: root.selectedScreen
                 section: "left"
-                visible: root.overrideEnabled
+                visible: root.widgetOverrideEnabled
                 width: parent.width
             }
             WidgetRow {
-                screenName: root.selectedWidgetScreen
+                screenName: root.selectedScreen
                 section: "center"
-                visible: root.overrideEnabled
+                visible: root.widgetOverrideEnabled
                 width: parent.width
             }
             WidgetRow {
-                screenName: root.selectedWidgetScreen
+                screenName: root.selectedScreen
                 section: "right"
-                visible: root.overrideEnabled
+                visible: root.widgetOverrideEnabled
                 width: parent.width
             }
         }

@@ -68,8 +68,6 @@ PanelWindow {
         }
     ]
 
-    signal panelClosed
-
     function close() {
         root.panelOpen = false;
         closeTimer.start();
@@ -146,7 +144,7 @@ PanelWindow {
             closeTimer.stop();
             root.panelOpen = false;
             root.visible = false;
-            root.panelClosed();
+            root.closed();
         }
 
         target: Quickshell
@@ -159,7 +157,7 @@ PanelWindow {
 
         onTriggered: {
             root.visible = false;
-            root.panelClosed();
+            root.closed();
         }
     }
     FocusScope {

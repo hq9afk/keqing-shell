@@ -80,7 +80,7 @@ build() {
     rm -rf "$_root/plugins/build"
 }
 link() {
-    local _src; _src="$(_here)/src"
+    local _src; _src="$(cd "$(_here)/.." && pwd)/src"
     local _bin; _bin="$(_here)/keqing-shell"
     sudo mkdir -p /etc/xdg/quickshell
     sudo rm -f /etc/xdg/quickshell/keqing-shell
