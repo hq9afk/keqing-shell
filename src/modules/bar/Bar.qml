@@ -10,6 +10,7 @@ import qs.modules.bar
 import qs.modules.bar.layout.components
 import qs.modules.bar.layout.popups
 import qs.modules.bar.service
+import qs.modules.core
 
 Scope {
     id: root
@@ -17,21 +18,23 @@ Scope {
     IpcHandler {
         function toggle() {
             var screenName = CompositorWorkspaceService.focusedScreenName();
-            if (!screenName)
+            if (!screenName) {
+                SettingsService.adapter.bar.autohideEnabled = !SettingsService.adapter.bar.autohideEnabled;
+                SettingsService.save();
                 return;
-            SettingsService.setBarLoaderOpen(screenName, !SettingsService.barLoaderOpen(screenName));
+            }
+            var current = SettingsService.barValue(screenName, "autohideEnabled");
+            SettingsService.setBarOverrideEnabled(screenName, true);
+            SettingsService.setBarValue(screenName, "autohideEnabled", !current);
         }
         function toggleAll() {
+            var screenName = CompositorWorkspaceService.focusedScreenName();
+            var current = screenName ? SettingsService.barValue(screenName, "autohideEnabled") : SettingsService.adapter.bar.autohideEnabled;
             var screens = Quickshell.screens;
-            var anyOpen = false;
             for (var i = 0; i < screens.length; i++) {
-                if (SettingsService.barLoaderOpen(screens[i].name)) {
-                    anyOpen = true;
-                    break;
-                }
+                SettingsService.setBarOverrideEnabled(screens[i].name, true);
+                SettingsService.setBarValue(screens[i].name, "autohideEnabled", !current);
             }
-            for (var j = 0; j < screens.length; j++)
-                SettingsService.setBarLoaderOpen(screens[j].name, !anyOpen);
         }
 
         target: "bar"
@@ -59,69 +62,76 @@ Scope {
                     };
                 }
 
-                Loader {
-                    active: SettingsService.barLoaderOpen(screenScope.modelData.name)
+                PanelWindow {
+                    id: win
 
-                    sourceComponent: Component {
-                        Item {
-                            PanelWindow {
-                                id: win
+                    readonly property bool autohide: SettingsService.barValueForScreen(screenScope.modelData, "autohideEnabled")
+                    readonly property bool effectiveShouldShow: !win.autohide || win.shouldShow
+                    readonly property int fullHeight: BarConfig.barMarginTop + BarConfig.barHeight
+                    readonly property bool panelOpenHere: PanelService.openedScreenName === screenScope.modelData.name || PanelService.closingScreenName === screenScope.modelData.name || (PanelService.getPopupMenuWindow(screenScope.modelData)?.visible ?? false) || ModuleStates.isOpenedFromBarOnScreen(screenScope.modelData.name)
+                    readonly property bool shouldShow: hoverHandler.hovered || win.panelOpenHere
 
-                                readonly property int fullHeight: BarConfig.barMarginTop + BarConfig.barHeight
+                    WlrLayershell.layer: WlrLayer.Top
+                    color: "transparent"
+                    exclusiveZone: win.autohide ? 0 : win.fullHeight
+                    implicitHeight: win.effectiveShouldShow || content.opacity > 0 ? win.fullHeight : 1
+                    screen: screenScope.modelData
 
-                                WlrLayershell.layer: WlrLayer.Top
-                                color: "transparent"
-                                exclusiveZone: win.fullHeight
-                                implicitHeight: win.fullHeight
-                                screen: screenScope.modelData
+                    anchors {
+                        left: true
+                        right: true
+                        top: true
+                    }
+                    margins {
+                        left: BarConfig.barMarginH
+                        right: BarConfig.barMarginH
+                    }
+                    HoverHandler {
+                        id: hoverHandler
+                    }
+                    Item {
+                        id: content
 
-                                anchors {
-                                    left: true
-                                    right: true
-                                    top: true
-                                }
-                                margins {
-                                    left: BarConfig.barMarginH
-                                    right: BarConfig.barMarginH
-                                }
-                                Item {
-                                    id: content
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.topMargin: BarConfig.barMarginTop
+                        height: BarConfig.barHeight
+                        opacity: win.effectiveShouldShow ? BarConfig.barVisibleOpacity : BarConfig.barHiddenOpacity
 
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    anchors.top: parent.top
-                                    anchors.topMargin: BarConfig.barMarginTop
-                                    height: BarConfig.barHeight
-
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        color: Qt.rgba(0, 0, 0, BarConfig.backgroundOpacity)
-                                    }
-                                    BarRegion {
-                                        position: "left"
-                                        screen: screenScope.modelData
-                                        widgets: screenScope.screenWidgets.left
-                                    }
-                                    BarRegion {
-                                        position: "center"
-                                        screen: screenScope.modelData
-                                        widgets: screenScope.screenWidgets.center
-                                    }
-                                    BarRegion {
-                                        position: "right"
-                                        screen: screenScope.modelData
-                                        widgets: screenScope.screenWidgets.right
-                                    }
-                                }
-                            }
-                            PopupOverlay {
-                                screen: screenScope.modelData
-                            }
-                            PopupMenuWindow {
-                                screen: screenScope.modelData
+                        Behavior on opacity {
+                            NumberAnimation {
+                                duration: BarConfig.barContentFadeMs
+                                easing.type: Easing.OutCubic
                             }
                         }
+
+                        Rectangle {
+                            anchors.fill: parent
+                            color: Qt.rgba(0, 0, 0, BarConfig.backgroundOpacity)
+                        }
+                        BarRegion {
+                            position: "left"
+                            screen: screenScope.modelData
+                            widgets: screenScope.screenWidgets.left
+                        }
+                        BarRegion {
+                            position: "center"
+                            screen: screenScope.modelData
+                            widgets: screenScope.screenWidgets.center
+                        }
+                        BarRegion {
+                            position: "right"
+                            screen: screenScope.modelData
+                            widgets: screenScope.screenWidgets.right
+                        }
                     }
+                }
+                PopupOverlay {
+                    screen: screenScope.modelData
+                }
+                PopupMenuWindow {
+                    screen: screenScope.modelData
                 }
             }
         }

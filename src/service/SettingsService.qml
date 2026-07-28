@@ -56,6 +56,7 @@ QtObject {
         })
     readonly property JsonAdapter adapter: JsonAdapter {
         property JsonObject bar: JsonObject {
+            property bool autohideEnabled: false
             property real backgroundOpacity: 0
             property int height: 35
             property int marginH: 20
@@ -157,9 +158,21 @@ QtObject {
         };
     }
 
-    function barLoaderOpen(screenName) {
+    function barValue(screenName, key) {
+        if (!screenName || screenName === "default")
+            return adapter.bar[key];
         var entry = root.barDisplays[screenName];
-        return !!(entry && entry.loaderOpen);
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.bar[key];
+    }
+    function barValueForScreen(screen, key) {
+        if (!screen)
+            return adapter.bar[key];
+        var entry = root.barDisplays[screen.name] !== undefined ? root.barDisplays[screen.name] : root.barDisplays[screen.model];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.bar[key];
     }
     function displayValue(screenName, key) {
         if (!screenName || screenName === "default")
@@ -220,9 +233,22 @@ QtObject {
     function save() {
         saveTimer.restart();
     }
-    function setBarLoaderOpen(screenName, open) {
+    function setBarOverrideEnabled(screenName, enabled) {
+        if (!root.barDisplays[screenName] && !enabled)
+            return;
         var all = ensureBarScreen(screenName);
-        all[screenName].loaderOpen = open;
+        all[screenName]._enabled = enabled;
+        adapter.barDisplays = all;
+        save();
+    }
+    function setBarValue(screenName, key, value) {
+        if (!screenName || screenName === "default") {
+            adapter.bar[key] = value;
+            save();
+            return;
+        }
+        var all = ensureBarScreen(screenName);
+        all[screenName][key] = value;
         adapter.barDisplays = all;
         save();
     }
