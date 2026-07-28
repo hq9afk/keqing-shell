@@ -73,7 +73,7 @@ Scope {
 
                     WlrLayershell.layer: WlrLayer.Top
                     color: "transparent"
-                    exclusiveZone: win.autohide ? 0 : win.fullHeight
+                    exclusiveZone: SettingsService.loaded && !win.autohide ? win.fullHeight : 0
                     implicitHeight: win.effectiveShouldShow || content.opacity > 0 ? win.fullHeight : 1
                     screen: screenScope.modelData
 
