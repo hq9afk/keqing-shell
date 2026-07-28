@@ -19,6 +19,7 @@ import qs.modules.overview
 import qs.modules.polkit
 import qs.modules.visualizer
 import qs.modules.wallpaper
+import qs.service
 
 ShellRoot {
     id: root
@@ -41,4 +42,7 @@ ShellRoot {
     Overview {}
     Settings {}
     Visualizer {}
+
+    // Load Network Service
+    Component.onCompleted: NetworkService.scan()
 }
