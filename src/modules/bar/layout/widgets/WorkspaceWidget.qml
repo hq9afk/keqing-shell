@@ -14,7 +14,14 @@ WidgetCapsule {
 
     readonly property var workspaces: {
         CompositorWorkspaceService.rev;
-        return CompositorWorkspaceService.pillsForScreen(screen);
+        var pills = CompositorWorkspaceService.pillsForScreen(screen) || [];
+        var seen = ({});
+        return pills.filter(p => {
+            if (seen[p.id])
+                return false;
+            seen[p.id] = true;
+            return true;
+        });
     }
 
     function syncPillModel(model, pills) {
@@ -23,7 +30,7 @@ WidgetCapsule {
             if (!pills.some(p => p.id === id))
                 model.remove(i);
         }
-        for (var idx = 0; idx < pills.length; idx++) {
+        for (var idx = 0; idx < pills.length && idx <= model.count; idx++) {
             var p = pills[idx];
             var curIdx = -1;
             for (var j = 0; j < model.count; j++) {

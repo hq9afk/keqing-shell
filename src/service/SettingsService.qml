@@ -73,6 +73,7 @@ QtObject {
             property bool autohideEnabled: false
             property int marginBottom: 10
         }
+        property var dockDisplays: ({})
         property JsonObject general: JsonObject {
             property string fontFamily: ""
         }
@@ -118,6 +119,7 @@ QtObject {
     }
     readonly property var controlCenter: adapter.controlCenter
     readonly property var displays: adapter.displays || {}
+    readonly property var dockDisplays: adapter.dockDisplays || {}
     readonly property string filePath: configDir + "settings.json"
     property Timer firstRunTimer: Timer {
         interval: 250
@@ -174,6 +176,22 @@ QtObject {
             return entry[key];
         return adapter.bar[key];
     }
+    function dockValue(screenName, key) {
+        if (!screenName || screenName === "default")
+            return adapter.dock[key];
+        var entry = root.dockDisplays[screenName];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.dock[key];
+    }
+    function dockValueForScreen(screen, key) {
+        if (!screen)
+            return adapter.dock[key];
+        var entry = root.dockDisplays[screen.name] !== undefined ? root.dockDisplays[screen.name] : root.dockDisplays[screen.model];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key];
+        return adapter.dock[key];
+    }
     function displayValue(screenName, key) {
         if (!screenName || screenName === "default")
             return (root.displays["default"] || {})[key] !== false;
@@ -194,6 +212,12 @@ QtObject {
             var def = all["default"] || {};
             all[screenName] = Object.assign({}, def);
         }
+        return all;
+    }
+    function ensureDockScreen(screenName) {
+        var all = JSON.parse(JSON.stringify(root.dockDisplays));
+        if (!all[screenName])
+            all[screenName] = {};
         return all;
     }
     function ensureIdleScreen(screenName) {
@@ -257,6 +281,25 @@ QtObject {
             adapter.controlCenter.cards = obj.cards;
         if (obj.cardOrder !== undefined)
             adapter.controlCenter.cardOrder = obj.cardOrder;
+        save();
+    }
+    function setDockOverrideEnabled(screenName, enabled) {
+        if (!root.dockDisplays[screenName] && !enabled)
+            return;
+        var all = ensureDockScreen(screenName);
+        all[screenName]._enabled = enabled;
+        adapter.dockDisplays = all;
+        save();
+    }
+    function setDockValue(screenName, key, value) {
+        if (!screenName || screenName === "default") {
+            adapter.dock[key] = value;
+            save();
+            return;
+        }
+        var all = ensureDockScreen(screenName);
+        all[screenName][key] = value;
+        adapter.dockDisplays = all;
         save();
     }
     function setDisplayOverrideEnabled(screenName, enabled) {

@@ -33,6 +33,8 @@ cat <<'EOF'
         bar                 Toggle bar (focused monitor)
         bar-all             Toggle bar (all monitors)
         controlcenter       Toggle control center
+        dock                Toggle dock
+        dock-all            Toggle dock (all monitors)
         launcher            Toggle launcher
         lock                Toggle lock screen
         logout              Toggle logout screen
@@ -104,6 +106,8 @@ ipc()           { _ipc; }
 bar()           { _ipc bar toggle; }
 bar-all()       { _ipc bar toggleAll; }
 controlcenter() { _ipc controlcenter; }
+dock()          { _ipc dock toggle; }
+dock-all()      { _ipc dock toggleAll; }
 launcher()      { _ipc launcher; }
 lock()          { _ipc lock; }
 logout()        { _ipc logout; }

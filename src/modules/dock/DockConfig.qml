@@ -22,7 +22,6 @@ QtObject {
     readonly property real iconUnfocusedOpacity: 0.5
 
     // Window
-    readonly property bool autohideEnabled: SettingsService.adapter.dock.autohideEnabled
     readonly property real hiddenOpacity: 0
     readonly property int marginBottom: SettingsService.adapter.dock.marginBottom
     readonly property int showAnimMs: 300
