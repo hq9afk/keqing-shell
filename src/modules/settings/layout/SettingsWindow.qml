@@ -27,11 +27,6 @@ PanelWindow {
             component: barTabComponent
         },
         {
-            label: "Color Scheme",
-            icon: IconConfig.palette,
-            component: colorSchemeTabComponent
-        },
-        {
             label: "Control Center",
             icon: IconConfig.controlCenter,
             component: controlCenterTabComponent
@@ -98,11 +93,6 @@ PanelWindow {
         id: barTabComponent
 
         BarTab {}
-    }
-    Component {
-        id: colorSchemeTabComponent
-
-        ColorSchemeTab {}
     }
     Component {
         id: controlCenterTabComponent

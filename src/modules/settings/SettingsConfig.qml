@@ -51,7 +51,6 @@ QtObject {
     readonly property int selectorBorderWidth: 2
 
     // Tabs
-    readonly property int colorSchemeTabSpacing: 14
     readonly property int controlCenterCardContentSpacing: 8
     readonly property int controlCenterLabelSpacing: 2
     readonly property int controlCenterRowHeight: 50
@@ -151,12 +150,6 @@ QtObject {
     readonly property int popupWidthNarrow: 260
     readonly property int popupWidthWide: 360
     readonly property int textFieldInset: 6
-
-    // Swatch
-    readonly property int swatchGroupSpacing: 6
-    readonly property int swatchRadius: 14
-    readonly property int swatchRowSpacing: 4
-    readonly property int swatchSize: 28
 
     // Spinner
     readonly property int spinnerDotInset: -1

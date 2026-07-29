@@ -3,39 +3,37 @@ pragma Singleton
 
 import QtQuick
 
-import qs.service
-
 QtObject {
     // Accent
-    property color accent: ColorSchemeService.currentColors.accent
+    property color accent: "#9B57F4"
     readonly property color accentAlpha12: Qt.rgba(accent.r, accent.g, accent.b, 0.12)
     readonly property color accentAlpha15: Qt.rgba(accent.r, accent.g, accent.b, 0.15)
     readonly property color accentAlpha18: Qt.rgba(accent.r, accent.g, accent.b, 0.18)
     readonly property color accentAlpha20: Qt.rgba(accent.r, accent.g, accent.b, 0.20)
     readonly property color accentAlpha25: Qt.rgba(accent.r, accent.g, accent.b, 0.25)
-    property color accentContainer: ColorSchemeService.currentColors.accentContainer
+    property color accentContainer: "#3C1877"
 
     // Accent alt
-    property color accentAlt: ColorSchemeService.currentColors.accentAlt
-    property color accentAltContainer: ColorSchemeService.currentColors.accentAltContainer
+    property color accentAlt: "#DBAA24"
+    property color accentAltContainer: "#2A1957"
 
     // Base
-    property color base: ColorSchemeService.currentColors.base
+    property color base: "#0A0614"
     readonly property color baseAlpha45: Qt.rgba(base.r, base.g, base.b, 0.45)
     readonly property color overlay: Qt.rgba(base.r, base.g, base.b, 0.92)
 
     // Lavender
-    property color lavender: ColorSchemeService.currentColors.lavender
+    property color lavender: "#806FBE"
     readonly property color lavenderAlpha20: Qt.rgba(lavender.r, lavender.g, lavender.b, 0.20)
     readonly property color lavenderAlpha35: Qt.rgba(lavender.r, lavender.g, lavender.b, 0.35)
     readonly property color lavenderSubtle: Qt.rgba(lavender.r, lavender.g, lavender.b, 0.15)
 
     // Surfaces
-    property color fieldBg: ColorSchemeService.currentColors.fieldBg
-    property color surfaceAlt: ColorSchemeService.currentColors.surfaceAlt
+    property color fieldBg: "#170D30"
+    property color surfaceAlt: "#1D113B"
 
     // Text
-    property color text: ColorSchemeService.currentColors.text
+    property color text: "#F0ECF9"
     readonly property color textAlpha03: Qt.rgba(text.r, text.g, text.b, 0.03)
     readonly property color textAlpha04: Qt.rgba(text.r, text.g, text.b, 0.04)
     readonly property color textAlpha05: Qt.rgba(text.r, text.g, text.b, 0.05)
@@ -50,7 +48,7 @@ QtObject {
     readonly property color textAlpha18: Qt.rgba(text.r, text.g, text.b, 0.18)
     readonly property color textAlpha20: Qt.rgba(text.r, text.g, text.b, 0.20)
     readonly property color textAlpha35: Qt.rgba(text.r, text.g, text.b, 0.35)
-    property color textMuted: ColorSchemeService.currentColors.textMuted
+    property color textMuted: "#AB9DC8"
     readonly property color textDim: Qt.rgba(textMuted.r, textMuted.g, textMuted.b, 0.6)
 
     // Fixed; not palette-derived

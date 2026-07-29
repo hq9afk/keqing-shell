@@ -66,7 +66,6 @@ done`
             property string animatedDir: ""
             property bool animatedEnabled: false
             property var animatedWallpapers: ({})
-            property var color: ({})
             property var staticColumns: ({})
             property string staticDir: ""
             property var staticFillModes: ({})
@@ -87,18 +86,8 @@ done`
             root.animatedEnabled = cacheAdapter.animatedEnabled || false;
             if (cacheAdapter.animatedDir !== "")
                 root.animatedDir = cacheAdapter.animatedDir;
-            var col = cacheAdapter.color || {};
-            root.colorSourceScreen = col.sourceScreen || "";
             if (cacheAdapter.staticDir !== "")
                 root.staticDir = cacheAdapter.staticDir;
-            if (root.colorSourceScreen === "") {
-                var screens = Object.keys(root.staticWallpapers).filter(s => s !== "HEADLESS" && (root.staticWallpapers[s] || [])[0]).sort();
-                if (screens.length > 0)
-                    root.colorSourceScreen = screens[0];
-            }
-            ColorSchemeService.wallpapers = root.primaryStaticWallpapers();
-            ColorSchemeService.selectedScreen = root.colorSourceScreen || "default";
-            ColorSchemeService.wallpapersLoaded = true;
             root.scanStatic(root.staticDir);
             root.scanAnimated(root.animatedDir);
             var animatedScreens = Object.keys(root.animatedWallpapers);
@@ -112,18 +101,7 @@ done`
             root.loaded = true;
         }
     }
-    property string colorSourceScreen: ""
     readonly property string configDir: Quickshell.env("HOME") + "/.config/keqing-shell/"
-    property Connections cssSync: Connections {
-        function onSelectedScreenChanged() {
-            if (root.colorSourceScreen !== ColorSchemeService.selectedScreen) {
-                root.colorSourceScreen = ColorSchemeService.selectedScreen;
-                saveTimer.restart();
-            }
-        }
-
-        target: ColorSchemeService
-    }
     property bool loaded: false
     property Process mkdirProc: Process {
         id: mkdirProc
@@ -189,9 +167,6 @@ fi
             cacheAdapter.animatedDir = root.animatedDir;
             cacheAdapter.staticColumns = root.staticColumns;
             cacheAdapter.animatedColumns = root.animatedColumns;
-            cacheAdapter.color = {
-                sourceScreen: root.colorSourceScreen
-            };
             cacheView.writeAdapter();
         }
     }
@@ -234,13 +209,6 @@ fi
         root.optimizeQueue = root.optimizeQueue.concat([path]);
         root.processOptimizeQueue();
     }
-    function primaryStaticWallpapers() {
-        var result = {};
-        var keys = Object.keys(root.staticWallpapers);
-        for (var i = 0; i < keys.length; i++)
-            result[keys[i]] = (root.staticWallpapers[keys[i]] || [])[0] || "";
-        return result;
-    }
     function processOptimizeQueue() {
         if (optimizeProc.running)
             return;
@@ -267,8 +235,6 @@ fi
             arr[columnIndex] = "";
         updated[screenName] = arr;
         staticWallpapers = updated;
-        ColorSchemeService.wallpapers = root.primaryStaticWallpapers();
-        ColorSchemeService.invalidate(screenName);
         saveTimer.restart();
         staticWallpaperChanged(screenName, "");
     }
@@ -388,12 +354,8 @@ fi
         arr[columnIndex] = path;
         updated[screenName] = arr;
         staticWallpapers = updated;
-        ColorSchemeService.wallpapers = root.primaryStaticWallpapers();
-        ColorSchemeService.invalidate(screenName);
         saveTimer.restart();
         staticWallpaperChanged(screenName, path);
-        if (screenName === ColorSchemeService.selectedScreen && columnIndex === 0)
-            ColorSchemeService.extract();
     }
 
     Component.onCompleted: mkdirProc.running = true
