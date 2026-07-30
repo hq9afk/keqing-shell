@@ -49,10 +49,9 @@ QtObject {
     property real menuEntranceOpacityStart: 0
     property real menuEntranceScaleEnd: 1.0
     property real menuEntranceScaleStart: 0.97
-    property int menuMinWidth: 200
     property int menuRadius: 10
     property int menuWidth: 700
-    property int menuWidthStep: 50
+
     // Modes
     readonly property string modeDrun: "drun"
     readonly property string modeDuckDuckGo: "duckduckgo"

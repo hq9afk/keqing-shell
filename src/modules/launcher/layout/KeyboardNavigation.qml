@@ -8,7 +8,6 @@ Item {
     property bool active: false
     property var launcherRef
 
-    signal requestChangeWidth(int delta)
     signal requestClose
     signal requestLaunch(bool shift)
     signal requestMove(int delta, bool shift)
@@ -37,13 +36,6 @@ Item {
             break;
         case Qt.Key_Escape:
             root.requestClose();
-            break;
-        case Qt.Key_BracketLeft:
-        case Qt.Key_BracketRight:
-            if (event.modifiers & Qt.ControlModifier)
-                root.requestChangeWidth(event.key === Qt.Key_BracketLeft ? -1 : 1);
-            else
-                handled = false;
             break;
         default:
             handled = false;

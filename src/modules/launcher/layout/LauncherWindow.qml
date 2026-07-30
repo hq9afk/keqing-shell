@@ -17,8 +17,6 @@ PanelWindow {
     property alias browseRef: browse
     property bool fileMenuOpen: false
     required property var launcherRef
-    property int menuWidth: LauncherConfig.menuWidth
-    property int menuWidthStep: LauncherConfig.menuWidthStep
     property string mode
     property var resultsModel: []
     property var selectedFileData: null
@@ -72,16 +70,10 @@ PanelWindow {
         color: Qt.rgba(ColorConfig.base.r, ColorConfig.base.g, ColorConfig.base.b, LauncherConfig.menuBgAlpha)
         height: getHeight()
         radius: LauncherConfig.menuRadius
-        width: root.menuWidth
+        width: LauncherConfig.menuWidth
         z: 1
 
         Behavior on height {
-            NumberAnimation {
-                duration: LauncherConfig.menuAnimMs
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on width {
             NumberAnimation {
                 duration: LauncherConfig.menuAnimMs
                 easing.type: Easing.InOutQuad
@@ -113,9 +105,6 @@ PanelWindow {
             anchors.fill: parent
             launcherRef: root.launcherRef
 
-            onRequestChangeWidth: delta => {
-                root.menuWidth = Math.max(LauncherConfig.menuMinWidth, root.menuWidth + (delta * root.menuWidthStep));
-            }
             onRequestClose: () => {
                 root.dismissRequested();
             }
