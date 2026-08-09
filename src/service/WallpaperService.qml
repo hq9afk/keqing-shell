@@ -5,7 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-import qs.modules.wallpaper
+import qs.wallpaper
 
 QtObject {
     id: root

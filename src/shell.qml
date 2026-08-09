@@ -4,21 +4,21 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 
-import qs.modules.bar
-import qs.modules.controlcenter
-import qs.modules.dock
-import qs.modules.idle
-import qs.modules.launcher
-import qs.modules.lock
-import qs.modules.logout
-import qs.modules.matrix
-import qs.modules.notification
-import qs.modules.osd
-import qs.modules.settings
-import qs.modules.overview
-import qs.modules.polkit
-import qs.modules.visualizer
-import qs.modules.wallpaper
+import qs.bar
+import qs.controlcenter
+import qs.dock
+import qs.idle
+import qs.launcher
+import qs.lock
+import qs.logout
+import qs.matrix
+import qs.notification
+import qs.osd
+import qs.settings
+import qs.overview
+import qs.polkit
+import qs.visualizer
+import qs.wallpaper
 
 ShellRoot {
     id: root
