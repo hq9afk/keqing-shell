@@ -47,20 +47,7 @@ Scope {
                 id: screenScope
 
                 required property var modelData
-                readonly property var screenWidgets: {
-                    var all = SettingsService.allWidgets;
-                    var sn = screenScope.modelData.name;
-                    var sm = screenScope.modelData.model;
-                    var entry = all[sn] || all[sm];
-                    if (!entry || entry._enabled === false)
-                        entry = all["default"] || SettingsService._defaultWidgets;
-                    var def = SettingsService._defaultWidgets;
-                    return {
-                        left: entry.left || def.left,
-                        center: entry.center || def.center,
-                        right: entry.right || def.right
-                    };
-                }
+                readonly property var screenWidgets: SettingsService._defaultWidgets
 
                 PanelWindow {
                     id: win

@@ -17,11 +17,6 @@ PanelWindow {
     property bool panelOpen: false
     readonly property list<var> tabDefs: [
         {
-            label: "Bar",
-            icon: IconConfig.layoutNavbar,
-            component: barTabComponent
-        },
-        {
             label: "Displays",
             icon: IconConfig.deviceDesktop,
             component: displaysTabComponent
@@ -69,11 +64,6 @@ PanelWindow {
     color: "transparent"
     visible: false
 
-    Component {
-        id: barTabComponent
-
-        BarTab {}
-    }
     Component {
         id: displaysTabComponent
 
@@ -164,20 +154,6 @@ PanelWindow {
 
             MouseArea {
                 anchors.fill: parent
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: ColorConfig.baseAlpha45
-                opacity: SettingsService.widgetPopupOpen ? 1.0 : 0.0
-                radius: GlobalConfig.radiusMd
-                z: 1
-
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: GlobalConfig.animationFast
-                        easing.type: Easing.OutCubic
-                    }
-                }
             }
             NavRail {
                 id: navRail

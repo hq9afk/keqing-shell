@@ -115,7 +115,11 @@ Item {
             Toggle {
                 active: root.overrideEnabled
 
-                onToggled: SettingsService.setDisplayOverrideEnabled(root.selectedScreen, !root.overrideEnabled)
+                onToggled: {
+                    var enabled = !root.overrideEnabled;
+                    SettingsService.setDisplayOverrideEnabled(root.selectedScreen, enabled);
+                    SettingsService.setBarOverrideEnabled(root.selectedScreen, enabled);
+                }
             }
         }
         Column {
@@ -175,6 +179,35 @@ Item {
 
                             onToggled: SettingsService.setDisplayValue(root.selectedScreen, toggleTile.modelData.key, !active)
                         }
+                    }
+                }
+            }
+            Rectangle {
+                border.color: ColorConfig.textAlpha07
+                border.width: SettingsConfig.hairlineBorderWidth
+                color: ColorConfig.textAlpha04
+                height: SettingsConfig.toggleTileHeight
+                radius: SettingsConfig.tileRadius
+                width: parent.width
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: SettingsConfig.tileContentMargin
+                    anchors.rightMargin: SettingsConfig.tileContentMargin
+                    spacing: SettingsConfig.tileContentSpacing
+
+                    Text {
+                        Layout.fillWidth: true
+                        color: ColorConfig.text
+                        font.family: FontConfig.fontFamily
+                        font.pixelSize: FontConfig.fontSettingsBody
+                        opacity: SettingsConfig.labelOpacity
+                        text: "Bar Autohide"
+                    }
+                    Toggle {
+                        active: SettingsService.barValue(root.selectedScreen, "autohideEnabled")
+
+                        onToggled: SettingsService.setBarValue(root.selectedScreen, "autohideEnabled", !active)
                     }
                 }
             }

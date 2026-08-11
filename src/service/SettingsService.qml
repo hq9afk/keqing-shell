@@ -77,24 +77,6 @@ QtObject {
             property list<var> active: ["Sink", "Source"]
         }
         property var powerButtons: ([])
-        property var widgets: ({})
-    }
-    readonly property var allWidgets: {
-        var p = adapter.widgets || {};
-        if (Object.keys(p).length === 0)
-            return {
-                "default": root._defaultWidgets
-            };
-        if (!p["default"] && (p.left !== undefined || p.center !== undefined || p.right !== undefined)) {
-            return {
-                "default": {
-                    left: p.left || root._defaultWidgets.left,
-                    center: p.center || root._defaultWidgets.center,
-                    right: p.right || root._defaultWidgets.right
-                }
-            };
-        }
-        return p;
     }
     readonly property var barDisplays: adapter.barDisplays || {}
     readonly property string configDir: {
@@ -133,16 +115,6 @@ QtObject {
         }
         onLoaded: root.loaded = true
     }
-    property bool widgetPopupOpen: false
-    readonly property var widgets: {
-        var def = allWidgets["default"] || root._defaultWidgets;
-        return {
-            left: def.left || root._defaultWidgets.left,
-            center: def.center || root._defaultWidgets.center,
-            right: def.right || root._defaultWidgets.right
-        };
-    }
-
     function barValue(screenName, key) {
         if (!screenName || screenName === "default")
             return adapter.bar[key];
@@ -207,18 +179,6 @@ QtObject {
         var all = JSON.parse(JSON.stringify(root.idleDisplays));
         if (!all[screenName])
             all[screenName] = {};
-        return all;
-    }
-    function ensureScreen(screenName) {
-        var all = JSON.parse(JSON.stringify(allWidgets));
-        if (!all[screenName]) {
-            var def = all["default"] || root._defaultWidgets;
-            all[screenName] = {
-                left: (def.left || root._defaultWidgets.left).slice(),
-                center: (def.center || root._defaultWidgets.center).slice(),
-                right: (def.right || root._defaultWidgets.right).slice()
-            };
-        }
         return all;
     }
     function idleValue(screenName, key) {
@@ -330,20 +290,6 @@ QtObject {
     }
     function setPowerButtons(arr) {
         adapter.powerButtons = arr;
-        save();
-    }
-    function setWidgetOverrideEnabled(screenName, enabled) {
-        if (!allWidgets[screenName] && !enabled)
-            return;
-        var all = ensureScreen(screenName);
-        all[screenName]._enabled = enabled;
-        adapter.widgets = all;
-        save();
-    }
-    function setWidgets(screenName, section, arr) {
-        var all = ensureScreen(screenName);
-        all[screenName][section] = arr;
-        adapter.widgets = all;
         save();
     }
 }
