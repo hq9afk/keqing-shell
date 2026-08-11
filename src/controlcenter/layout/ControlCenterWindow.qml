@@ -95,7 +95,7 @@ PanelWindow {
 
                     ProfileCard {}
                     Repeater {
-                        model: SettingsService.controlCenter.cards
+                        model: ["battery", "systemStats", "cpuTemp", "gpuTemp", "media", "volume"]
 
                         delegate: CardLoader {
                             required property var modelData

@@ -26,17 +26,13 @@ Variants {
                 WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
                 WlrLayershell.layer: WlrLayer.Overlay
                 WlrLayershell.namespace: "keqing-notifications"
-                anchors.bottom: SettingsService.adapter.notification.vertical === "bottom"
-                anchors.left: SettingsService.adapter.notification.horizontal === "left"
-                anchors.right: SettingsService.adapter.notification.horizontal === "right"
-                anchors.top: SettingsService.adapter.notification.vertical === "top"
+                anchors.bottom: true
+                anchors.right: true
                 color: "transparent"
                 implicitHeight: Math.max(1, stack.implicitHeight)
                 implicitWidth: NotificationConfig.cardWidth
-                margins.bottom: SettingsService.adapter.notification.vertical === "bottom" ? NotificationConfig.screenMargin : 0
-                margins.left: SettingsService.adapter.notification.horizontal === "left" ? NotificationConfig.screenMargin : 0
-                margins.right: SettingsService.adapter.notification.horizontal === "right" ? NotificationConfig.screenMargin : 0
-                margins.top: SettingsService.adapter.notification.vertical === "top" ? NotificationConfig.screenMargin : 0
+                margins.bottom: NotificationConfig.screenMargin
+                margins.right: NotificationConfig.screenMargin
                 screen: screenScope.modelData
                 visible: DisplayService.showNotifications(screenScope.modelData) && NotificationService.popupModel.count > 0
 

@@ -22,11 +22,6 @@ PanelWindow {
             component: barTabComponent
         },
         {
-            label: "Control Center",
-            icon: IconConfig.controlCenter,
-            component: controlCenterTabComponent
-        },
-        {
             label: "Displays",
             icon: IconConfig.deviceDesktop,
             component: displaysTabComponent
@@ -40,11 +35,6 @@ PanelWindow {
             label: "Idle",
             icon: IconConfig.moonStars,
             component: idleTabComponent
-        },
-        {
-            label: "Notifications",
-            icon: IconConfig.bell,
-            component: notificationsTabComponent
         },
         {
             label: "OSD",
@@ -85,11 +75,6 @@ PanelWindow {
         BarTab {}
     }
     Component {
-        id: controlCenterTabComponent
-
-        ControlCenterTab {}
-    }
-    Component {
         id: displaysTabComponent
 
         DisplaysTab {}
@@ -103,11 +88,6 @@ PanelWindow {
         id: idleTabComponent
 
         IdleTab {}
-    }
-    Component {
-        id: notificationsTabComponent
-
-        NotificationsTab {}
     }
     Component {
         id: osdTabComponent

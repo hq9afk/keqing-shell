@@ -59,10 +59,6 @@ QtObject {
             property bool autohideEnabled: false
         }
         property var barDisplays: ({})
-        property JsonObject controlCenter: JsonObject {
-            property var cardOrder: []
-            property list<var> cards: ["battery", "systemStats", "cpuTemp", "gpuTemp", "media", "volume"]
-        }
         property var displays: ({})
         property JsonObject dock: JsonObject {
             property bool autohideEnabled: false
@@ -77,10 +73,6 @@ QtObject {
             property int screensaverTimeoutSeconds: 300
         }
         property var idleDisplays: ({})
-        property JsonObject notification: JsonObject {
-            property string horizontal: "right"
-            property string vertical: "bottom"
-        }
         property JsonObject osd: JsonObject {
             property list<var> active: ["Sink", "Source"]
         }
@@ -109,7 +101,6 @@ QtObject {
         var xdg = Quickshell.env("XDG_CONFIG_HOME");
         return (xdg || Quickshell.env("HOME") + "/.config") + "/keqing-shell/";
     }
-    readonly property var controlCenter: adapter.controlCenter
     readonly property var displays: adapter.displays || {}
     readonly property var dockDisplays: adapter.dockDisplays || {}
     readonly property string filePath: configDir + "settings.json"
@@ -268,13 +259,6 @@ QtObject {
         adapter.barDisplays = all;
         save();
     }
-    function setControlCenter(obj) {
-        if (obj.cards !== undefined)
-            adapter.controlCenter.cards = obj.cards;
-        if (obj.cardOrder !== undefined)
-            adapter.controlCenter.cardOrder = obj.cardOrder;
-        save();
-    }
     function setDisplayOverrideEnabled(screenName, enabled) {
         if (!root.displays[screenName] && !enabled)
             return;
@@ -338,13 +322,6 @@ QtObject {
         var all = ensureIdleScreen(screenName);
         all[screenName][key] = value;
         adapter.idleDisplays = all;
-        save();
-    }
-    function setNotification(obj) {
-        if (obj.vertical !== undefined)
-            adapter.notification.vertical = obj.vertical;
-        if (obj.horizontal !== undefined)
-            adapter.notification.horizontal = obj.horizontal;
         save();
     }
     function setOsd(arr) {
