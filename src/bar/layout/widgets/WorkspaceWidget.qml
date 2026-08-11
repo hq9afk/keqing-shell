@@ -80,14 +80,6 @@ WidgetCapsule {
             anchors.verticalCenter: parent.verticalCenter
             spacing: BarConfig.workspacePillSpacing
 
-            move: Transition {
-                NumberAnimation {
-                    duration: BarConfig.workspaceReorderAnimMs
-                    easing.type: Easing.OutQuad
-                    properties: "x,y"
-                }
-            }
-
             Repeater {
                 model: pillModel
 
@@ -117,6 +109,7 @@ WidgetCapsule {
                     Behavior on width {
                         NumberAnimation {
                             duration: BarConfig.workspacePillAnimMs
+                            easing.type: Easing.Linear
                         }
                     }
 
