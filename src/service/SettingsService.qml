@@ -57,11 +57,6 @@ QtObject {
     readonly property JsonAdapter adapter: JsonAdapter {
         property JsonObject bar: JsonObject {
             property bool autohideEnabled: false
-            property real backgroundOpacity: 0
-            property int height: 35
-            property int marginH: 20
-            property int marginTop: 10
-            property int screenMargin: 20
         }
         property var barDisplays: ({})
         property JsonObject controlCenter: JsonObject {
@@ -74,9 +69,6 @@ QtObject {
             property int marginBottom: 10
         }
         property var dockDisplays: ({})
-        property JsonObject general: JsonObject {
-            property string fontFamily: ""
-        }
         property JsonObject idle: JsonObject {
             property bool ambientEnabled: true
             property int ambientTimeoutSeconds: 150
@@ -176,6 +168,14 @@ QtObject {
             return entry[key];
         return adapter.bar[key];
     }
+    function displayValue(screenName, key) {
+        if (!screenName || screenName === "default")
+            return (root.displays["default"] || {})[key] !== false;
+        var entry = root.displays[screenName];
+        if (entry && entry._enabled !== false && entry[key] !== undefined)
+            return entry[key] !== false;
+        return (root.displays["default"] || {})[key] !== false;
+    }
     function dockValue(screenName, key) {
         if (!screenName || screenName === "default")
             return adapter.dock[key];
@@ -191,14 +191,6 @@ QtObject {
         if (entry && entry._enabled !== false && entry[key] !== undefined)
             return entry[key];
         return adapter.dock[key];
-    }
-    function displayValue(screenName, key) {
-        if (!screenName || screenName === "default")
-            return (root.displays["default"] || {})[key] !== false;
-        var entry = root.displays[screenName];
-        if (entry && entry._enabled !== false && entry[key] !== undefined)
-            return entry[key] !== false;
-        return (root.displays["default"] || {})[key] !== false;
     }
     function ensureBarScreen(screenName) {
         var all = JSON.parse(JSON.stringify(root.barDisplays));
@@ -283,25 +275,6 @@ QtObject {
             adapter.controlCenter.cardOrder = obj.cardOrder;
         save();
     }
-    function setDockOverrideEnabled(screenName, enabled) {
-        if (!root.dockDisplays[screenName] && !enabled)
-            return;
-        var all = ensureDockScreen(screenName);
-        all[screenName]._enabled = enabled;
-        adapter.dockDisplays = all;
-        save();
-    }
-    function setDockValue(screenName, key, value) {
-        if (!screenName || screenName === "default") {
-            adapter.dock[key] = value;
-            save();
-            return;
-        }
-        var all = ensureDockScreen(screenName);
-        all[screenName][key] = value;
-        adapter.dockDisplays = all;
-        save();
-    }
     function setDisplayOverrideEnabled(screenName, enabled) {
         if (!root.displays[screenName] && !enabled)
             return;
@@ -321,8 +294,23 @@ QtObject {
         adapter.displays = obj;
         save();
     }
-    function setFontFamily(family) {
-        adapter.general.fontFamily = family;
+    function setDockOverrideEnabled(screenName, enabled) {
+        if (!root.dockDisplays[screenName] && !enabled)
+            return;
+        var all = ensureDockScreen(screenName);
+        all[screenName]._enabled = enabled;
+        adapter.dockDisplays = all;
+        save();
+    }
+    function setDockValue(screenName, key, value) {
+        if (!screenName || screenName === "default") {
+            adapter.dock[key] = value;
+            save();
+            return;
+        }
+        var all = ensureDockScreen(screenName);
+        all[screenName][key] = value;
+        adapter.dockDisplays = all;
         save();
     }
     function setIdleEnabled(enabled) {

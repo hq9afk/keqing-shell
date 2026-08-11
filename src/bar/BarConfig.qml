@@ -3,17 +3,16 @@ pragma Singleton
 
 import QtQuick
 
-import qs.service
 import qs.config
 
 QtObject {
     // Bar
-    readonly property real backgroundOpacity: SettingsService.adapter.bar.backgroundOpacity
+    readonly property real backgroundOpacity: 0
     readonly property int barContentFadeMs: 300
-    readonly property int barHeight: SettingsService.adapter.bar.height
+    readonly property int barHeight: 35
     readonly property real barHiddenOpacity: 0
-    readonly property int barMarginH: SettingsService.adapter.bar.marginH
-    readonly property int barMarginTop: SettingsService.adapter.bar.marginTop
+    readonly property int barMarginH: 20
+    readonly property int barMarginTop: 10
     readonly property real barVisibleOpacity: 1
 
     // Battery
@@ -111,7 +110,7 @@ QtObject {
     readonly property int panelWidthCalendar: 280
     readonly property int panelWidthMedium: 320
     readonly property int panelWidthSmall: 300
-    readonly property int screenMargin: SettingsService.adapter.bar.screenMargin
+    readonly property int screenMargin: 20
 
     // SystemMonitor
     readonly property int sysMonitorBarHeight: 5

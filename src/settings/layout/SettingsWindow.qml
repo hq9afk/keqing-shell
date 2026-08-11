@@ -17,11 +17,6 @@ PanelWindow {
     property bool panelOpen: false
     readonly property list<var> tabDefs: [
         {
-            label: "General",
-            icon: IconConfig.home,
-            component: generalTabComponent
-        },
-        {
             label: "Bar",
             icon: IconConfig.layoutNavbar,
             component: barTabComponent
@@ -84,11 +79,6 @@ PanelWindow {
     color: "transparent"
     visible: false
 
-    Component {
-        id: generalTabComponent
-
-        GeneralTab {}
-    }
     Component {
         id: barTabComponent
 
