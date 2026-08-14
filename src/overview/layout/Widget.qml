@@ -7,7 +7,6 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
 
-import qs.overview
 import qs.overview.layout
 import qs.overview.service
 import qs.config

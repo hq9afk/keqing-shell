@@ -5,7 +5,6 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
 
-import qs.overview
 import qs.config
 
 Item {

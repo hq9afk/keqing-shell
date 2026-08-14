@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 
-import qs.overview
+import qs.config
 
 ToolTip {
     id: root

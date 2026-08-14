@@ -6,7 +6,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
 
-import qs.overview
+import qs.config
 import qs.overview.service
 
 PanelWindow {

@@ -6,7 +6,6 @@ import Quickshell
 import Quickshell.Io
 
 import qs.service
-import qs.overview
 
 Item {
     id: root

@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Hyprland
 
-import qs.overview
+import qs.config
 
 Item {
     id: root
