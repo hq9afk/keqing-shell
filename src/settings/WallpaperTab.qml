@@ -607,6 +607,12 @@ Item {
             id: animatedSubtab
 
             property int selectedColumn: 0
+            readonly property var selectedFillModeMap: {
+                var arr = WallpaperService.animatedFillModes[animatedSubtab.selectedScreen] ?? [];
+                var m = {};
+                m[animatedSubtab.selectedScreen] = arr[animatedSubtab.selectedColumn] ?? "crop";
+                return m;
+            }
             property string selectedScreen: {
                 var focusedName = HyprlandService.focusedMonitor?.name ?? "";
                 if (focusedName && animatedSubtab.sortedScreens.some(s => s.name === focusedName))
@@ -663,7 +669,7 @@ Item {
                     Layout.fillWidth: true
                     Layout.preferredHeight: WallpaperConfig.controlRowHeight
                     columnCount: WallpaperService.animatedColumns[animatedSubtab.selectedScreen] ?? 1
-                    fillModeSupported: false
+                    fillModes: animatedSubtab.selectedFillModeMap
                     selectedScreen: animatedSubtab.selectedScreen
                     wallpapers: animatedSubtab.selectedVideoMap
 
@@ -672,6 +678,7 @@ Item {
                         if (animatedSubtab.selectedColumn >= n)
                             animatedSubtab.selectedColumn = n - 1;
                     }
+                    onFillModeChanged: mode => WallpaperService.setAnimatedFillMode(animatedSubtab.selectedScreen, animatedSubtab.selectedColumn, mode)
                     onWallpaperRemoved: WallpaperService.removeAnimatedWallpaper(animatedSubtab.selectedScreen, animatedSubtab.selectedColumn)
                 }
                 ImageGrid {

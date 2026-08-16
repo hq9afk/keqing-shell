@@ -47,6 +47,7 @@ done`
         }
     }
     property var animatedFiles: []
+    property var animatedFillModes: ({})
     property var animatedOptimized: ({})
     property var animatedOptimizing: ({})
     property bool animatedScanning: false
@@ -65,6 +66,7 @@ done`
             property var animatedColumns: ({})
             property string animatedDir: ""
             property bool animatedEnabled: false
+            property var animatedFillModes: ({})
             property var animatedWallpapers: ({})
             property bool defaultEnabled: true
             property var staticColumns: ({})
@@ -82,6 +84,7 @@ done`
             root.staticWallpapers = Object.assign({}, cacheAdapter.staticWallpapers || {});
             root.staticFillModes = Object.assign({}, cacheAdapter.staticFillModes || {});
             root.animatedWallpapers = Object.assign({}, cacheAdapter.animatedWallpapers || {});
+            root.animatedFillModes = Object.assign({}, cacheAdapter.animatedFillModes || {});
             root.staticColumns = Object.assign({}, cacheAdapter.staticColumns || {});
             root.animatedColumns = Object.assign({}, cacheAdapter.animatedColumns || {});
             root.animatedEnabled = cacheAdapter.animatedEnabled || false;
@@ -168,6 +171,7 @@ fi
             cacheAdapter.animatedEnabled = root.animatedEnabled;
             cacheAdapter.defaultEnabled = root.defaultEnabled;
             cacheAdapter.animatedWallpapers = root.animatedWallpapers;
+            cacheAdapter.animatedFillModes = root.animatedFillModes;
             cacheAdapter.animatedDir = root.animatedDir;
             cacheAdapter.staticColumns = root.staticColumns;
             cacheAdapter.animatedColumns = root.animatedColumns;
@@ -277,6 +281,9 @@ fi
         var updatedWallpapers = Object.assign({}, animatedWallpapers);
         updatedWallpapers[screenName] = root.resized(updatedWallpapers[screenName], clamped, "");
         animatedWallpapers = updatedWallpapers;
+        var updatedFillModes = Object.assign({}, animatedFillModes);
+        updatedFillModes[screenName] = root.resized(updatedFillModes[screenName], clamped, "crop");
+        animatedFillModes = updatedFillModes;
         saveTimer.restart();
     }
     function setAnimatedDir(path) {
@@ -310,6 +317,16 @@ fi
         saveTimer.restart();
         if (path)
             root.optimizeAnimatedWallpaper(path);
+    }
+    function setAnimatedFillMode(screenName, columnIndex, mode) {
+        var updated = Object.assign({}, animatedFillModes);
+        var arr = (updated[screenName] || []).slice();
+        while (arr.length <= columnIndex)
+            arr.push("crop");
+        arr[columnIndex] = mode;
+        updated[screenName] = arr;
+        animatedFillModes = updated;
+        saveTimer.restart();
     }
     function setDefaultEnabled(enabled) {
         root.defaultEnabled = enabled;

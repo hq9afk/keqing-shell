@@ -25,10 +25,6 @@ Item {
         switch (root.fillArray[root.columnIndex] ?? "crop") {
         case "fit":
             return Image.PreserveAspectFit;
-        case "stretch":
-            return Image.Stretch;
-        case "tile":
-            return Image.Tile;
         default:
             return Image.PreserveAspectCrop;
         }

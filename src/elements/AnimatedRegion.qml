@@ -21,6 +21,15 @@ Item {
     required property string screenName
     readonly property string videoPath: (WallpaperService.animatedWallpapers[root.screenName] ?? [])[root.columnIndex] ?? ""
 
+    function resolvedFillMode() {
+        switch ((WallpaperService.animatedFillModes[root.screenName] ?? [])[root.columnIndex] ?? "crop") {
+        case "fit":
+            return VideoOutput.PreserveAspectFit;
+        default:
+            return VideoOutput.PreserveAspectCrop;
+        }
+    }
+
     height: root.rect.h * parent.height
     width: root.rect.w * parent.width
     x: root.rect.x * parent.width
@@ -48,7 +57,7 @@ Item {
         id: animatedOutput
 
         anchors.fill: parent
-        fillMode: VideoOutput.PreserveAspectCrop
+        fillMode: root.resolvedFillMode()
         visible: animatedPlayer.source !== ""
     }
     Image {
