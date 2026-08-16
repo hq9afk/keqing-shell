@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs.bar.components
-import qs.bar.popups.panels
+import qs.bar.panels
 import qs.service
 
 PanelWindow {

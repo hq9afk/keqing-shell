@@ -8,52 +8,6 @@ import Quickshell.Io
 QtObject {
     id: root
 
-    readonly property var _defaultWidgets: ({
-            left: [
-                {
-                    "id": "Power"
-                },
-                {
-                    "id": "Workspace"
-                },
-                {
-                    "id": "Dock"
-                }
-            ],
-            center: [
-                {
-                    "id": "Clock",
-                    "format": "ddd yyyy-MM-dd hh:mm:ss"
-                }
-            ],
-            right: [
-                {
-                    "id": "Tray",
-                    "startExpanded": false,
-                    "arrowSide": "right",
-                    "direction": "rtl"
-                },
-                {
-                    "id": "SystemMonitor"
-                },
-                {
-                    "id": "Network"
-                },
-                {
-                    "id": "Bluetooth"
-                },
-                {
-                    "id": "Volume"
-                },
-                {
-                    "id": "Battery",
-                    "hideIfNotDetected": true
-                },
-                {
-                    "id": "ControlCenter"
-                }
-            ]
-        })
     readonly property JsonAdapter adapter: JsonAdapter {
         property JsonObject bar: JsonObject {
             property bool autohideEnabled: false

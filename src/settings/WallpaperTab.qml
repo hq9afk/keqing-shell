@@ -187,7 +187,6 @@ Item {
 
         height: WallpaperConfig.controlRowHeight
 
-        // inlined CountStepper (single use)
         Item {
             id: stepper
 
@@ -388,7 +387,6 @@ Item {
             clip: true
             model: imageGrid.sortedFiles
 
-            // inlined WallpaperThumbnail (single use)
             delegate: Item {
                 id: cell
 
@@ -468,6 +466,28 @@ Item {
     ColumnLayout {
         anchors.fill: parent
         spacing: WallpaperConfig.columnSpacing
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: WallpaperConfig.controlRowHeight
+
+            Text {
+                Layout.alignment: Qt.AlignVCenter
+                color: ColorConfig.text
+                font.family: FontConfig.fontFamily
+                font.pixelSize: FontConfig.fontSettingsBody
+                text: "Enable default wallpaper"
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Toggle {
+                Layout.alignment: Qt.AlignVCenter
+                active: WallpaperService.defaultEnabled
+
+                onToggled: WallpaperService.setDefaultEnabled(!active)
+            }
+        }
 
         RowLayout {
             Layout.fillWidth: true

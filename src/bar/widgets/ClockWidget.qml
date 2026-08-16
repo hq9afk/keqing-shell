@@ -18,7 +18,7 @@ WidgetCapsule {
         color: ColorConfig.text
         font.family: FontConfig.fontFamily
         font.pixelSize: FontConfig.fontBody
-        text: Qt.formatDateTime(DateTimeService.date, config.format || "ddd yyyy-MM-dd hh:mm:ss")
+        text: Qt.formatDateTime(DateTimeService.date, GlobalConfig.timeFormat)
     }
     MouseArea {
         acceptedButtons: Qt.LeftButton

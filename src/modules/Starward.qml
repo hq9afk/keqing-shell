@@ -13,7 +13,7 @@ import qs.config
 ModuleLoader {
     id: root
 
-    module: "logout"
+    module: "starward"
 
     sourceComp: Component {
         Scope {
@@ -33,7 +33,7 @@ ModuleLoader {
                         return btns.map(function (b) {
                             return b.char || "";
                         });
-                    return LogoutConfig.actionsChars;
+                    return StarwardConfig.actionsChars;
                 }
                 readonly property var command: {
                     var btns = SettingsService.powerButtons;
@@ -41,7 +41,7 @@ ModuleLoader {
                         return btns.map(function (b) {
                             return b.cmd || "";
                         });
-                    return LogoutConfig.actionsCommands;
+                    return StarwardConfig.actionsCommands;
                 }
                 property bool isOpen: false
 
@@ -184,13 +184,13 @@ ModuleLoader {
                             controller.exec(i);
                         }
                         function move(i) {
-                            currentIndex = (currentIndex + i + LogoutConfig.buttonsCount) % LogoutConfig.buttonsCount;
+                            currentIndex = (currentIndex + i + StarwardConfig.buttonsCount) % StarwardConfig.buttonsCount;
                         }
                         function setIndex(i) {
                             currentIndex = i;
                         }
 
-                        model: LogoutConfig.buttonsCount
+                        model: StarwardConfig.buttonsCount
                         z: 1
 
                         delegate: Rectangle {
@@ -203,40 +203,40 @@ ModuleLoader {
                             readonly property bool isMouseHovered: click.containsMouse
 
                             function setExpanded(show) {
-                                opacity = show ? LogoutConfig.buttonVisibleOpacity : LogoutConfig.buttonHiddenOpacity;
-                                expandRadius = show ? LogoutConfig.buttonsExpandedRadius : 0;
+                                opacity = show ? StarwardConfig.buttonVisibleOpacity : StarwardConfig.buttonHiddenOpacity;
+                                expandRadius = show ? StarwardConfig.buttonsExpandedRadius : 0;
                             }
 
                             border.color: buttonDelegate.isHighlighted ? ColorConfig.accentAlt : ColorConfig.accent
-                            border.width: LogoutConfig.buttonBorderWidth
+                            border.width: StarwardConfig.buttonBorderWidth
                             color: ColorConfig.fieldBg
-                            height: LogoutConfig.buttonSize
-                            opacity: LogoutConfig.buttonHiddenOpacity
-                            radius: LogoutConfig.buttonSize / LogoutConfig.buttonCornerRadiusDiv
-                            scale: buttonDelegate.isHighlighted ? LogoutConfig.buttonHighlightScale : 1
-                            width: LogoutConfig.buttonSize
-                            x: buttonDelegate.expandRadius * Math.cos(LogoutConfig.buttonsStartAngle + LogoutConfig.buttonsStepAngle * buttonDelegate.index) - LogoutConfig.buttonSize / 2
-                            y: buttonDelegate.expandRadius * Math.sin(LogoutConfig.buttonsStartAngle + LogoutConfig.buttonsStepAngle * buttonDelegate.index) - LogoutConfig.buttonSize / 2
+                            height: StarwardConfig.buttonSize
+                            opacity: StarwardConfig.buttonHiddenOpacity
+                            radius: StarwardConfig.buttonSize / StarwardConfig.buttonCornerRadiusDiv
+                            scale: buttonDelegate.isHighlighted ? StarwardConfig.buttonHighlightScale : 1
+                            width: StarwardConfig.buttonSize
+                            x: buttonDelegate.expandRadius * Math.cos(StarwardConfig.buttonsStartAngle + StarwardConfig.buttonsStepAngle * buttonDelegate.index) - StarwardConfig.buttonSize / 2
+                            y: buttonDelegate.expandRadius * Math.sin(StarwardConfig.buttonsStartAngle + StarwardConfig.buttonsStepAngle * buttonDelegate.index) - StarwardConfig.buttonSize / 2
 
                             Behavior on border.color {
                                 ColorAnimation {
-                                    duration: LogoutConfig.buttonBorderAnimMs
+                                    duration: StarwardConfig.buttonBorderAnimMs
                                     easing.type: Easing.OutCubic
                                 }
                             }
                             Behavior on expandRadius {
                                 NumberAnimation {
-                                    duration: LogoutConfig.buttonRadiusAnimMs
+                                    duration: StarwardConfig.buttonRadiusAnimMs
                                 }
                             }
                             Behavior on opacity {
                                 NumberAnimation {
-                                    duration: LogoutConfig.buttonOpacityAnimMs
+                                    duration: StarwardConfig.buttonOpacityAnimMs
                                 }
                             }
                             Behavior on scale {
                                 NumberAnimation {
-                                    duration: LogoutConfig.buttonScaleAnimMs
+                                    duration: StarwardConfig.buttonScaleAnimMs
                                     easing.type: Easing.OutCubic
                                 }
                             }
@@ -257,7 +257,7 @@ ModuleLoader {
                             Text {
                                 color: ColorConfig.text
                                 font.family: FontConfig.yujiMaiFamily
-                                font.pixelSize: LogoutConfig.buttonSize / 2
+                                font.pixelSize: StarwardConfig.buttonSize / 2
                                 text: controller.chars[buttonDelegate.index] ?? ""
                                 x: (parent.width - width) / 2
                                 y: (parent.height - height) / 2
@@ -270,11 +270,11 @@ ModuleLoader {
                         anchors.centerIn: parent
                         bgColor: ColorConfig.fieldBg
                         borderColor: ColorConfig.accent
-                        borderWidth: LogoutConfig.logoBorderWidth
-                        height: LogoutConfig.logoSize
+                        borderWidth: StarwardConfig.logoBorderWidth
+                        height: StarwardConfig.logoSize
                         scale: 0
-                        source: window.visible ? GlobalConfig.logoutLogo : ""
-                        width: LogoutConfig.logoSize
+                        source: window.visible ? GlobalConfig.starwardLogo : ""
+                        width: StarwardConfig.logoSize
                     }
                 }
 
@@ -345,7 +345,7 @@ ModuleLoader {
 
                         property int i: 0
 
-                        interval: LogoutConfig.buttonsStaggerMs
+                        interval: StarwardConfig.buttonsStaggerMs
                         repeat: true
 
                         onTriggered: {
@@ -363,7 +363,7 @@ ModuleLoader {
 
                         property int i: buttons.count - 1
 
-                        interval: LogoutConfig.buttonsStaggerMs
+                        interval: StarwardConfig.buttonsStaggerMs
                         repeat: true
 
                         onTriggered: {
@@ -388,7 +388,7 @@ ModuleLoader {
                             script: logo.reset()
                         }
                         NumberAnimation {
-                            duration: LogoutConfig.logoAnimMs
+                            duration: StarwardConfig.logoAnimMs
                             easing.type: Easing.OutBack
                             from: 0
                             properties: "scale"
@@ -399,7 +399,7 @@ ModuleLoader {
                             script: buttonIn.start()
                         }
                         PauseAnimation {
-                            duration: buttons.count * LogoutConfig.buttonsStaggerMs
+                            duration: buttons.count * StarwardConfig.buttonsStaggerMs
                         }
                         ScriptAction {
                             script: {
@@ -420,10 +420,10 @@ ModuleLoader {
                             script: buttonOut.start()
                         }
                         PauseAnimation {
-                            duration: buttons.count * LogoutConfig.buttonsStaggerMs
+                            duration: buttons.count * StarwardConfig.buttonsStaggerMs
                         }
                         NumberAnimation {
-                            duration: LogoutConfig.logoAnimMs
+                            duration: StarwardConfig.logoAnimMs
                             easing.type: Easing.InBack
                             from: 1
                             properties: "scale"
@@ -449,6 +449,6 @@ ModuleLoader {
             root.toggle();
         }
 
-        target: "logout"
+        target: "starward"
     }
 }

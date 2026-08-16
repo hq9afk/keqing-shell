@@ -59,9 +59,9 @@ Item {
         fillMode: Image.PreserveAspectFit
         height: parent.height * 0.5
         smooth: true
-        source: WallpaperService.loaded && root.wallpaperPath === "" ? GlobalConfig.defaultWallpaper : ""
+        source: WallpaperService.loaded && WallpaperService.defaultEnabled && root.wallpaperPath === "" ? GlobalConfig.defaultWallpaper : ""
         sourceSize: Qt.size(0, height)
-        visible: WallpaperService.loaded && root.wallpaperPath === ""
+        visible: WallpaperService.loaded && WallpaperService.defaultEnabled && root.wallpaperPath === ""
         width: parent.width * 0.5
     }
 }

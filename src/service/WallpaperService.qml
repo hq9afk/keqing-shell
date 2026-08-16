@@ -66,6 +66,7 @@ done`
             property string animatedDir: ""
             property bool animatedEnabled: false
             property var animatedWallpapers: ({})
+            property bool defaultEnabled: true
             property var staticColumns: ({})
             property string staticDir: ""
             property var staticFillModes: ({})
@@ -84,6 +85,7 @@ done`
             root.staticColumns = Object.assign({}, cacheAdapter.staticColumns || {});
             root.animatedColumns = Object.assign({}, cacheAdapter.animatedColumns || {});
             root.animatedEnabled = cacheAdapter.animatedEnabled || false;
+            root.defaultEnabled = cacheAdapter.defaultEnabled ?? true;
             if (cacheAdapter.animatedDir !== "")
                 root.animatedDir = cacheAdapter.animatedDir;
             if (cacheAdapter.staticDir !== "")
@@ -102,6 +104,7 @@ done`
         }
     }
     readonly property string configDir: Quickshell.env("HOME") + "/.config/keqing-shell/"
+    property bool defaultEnabled: true
     property bool loaded: false
     property Process mkdirProc: Process {
         id: mkdirProc
@@ -163,6 +166,7 @@ fi
             cacheAdapter.staticFillModes = root.staticFillModes;
             cacheAdapter.staticDir = root.staticDir;
             cacheAdapter.animatedEnabled = root.animatedEnabled;
+            cacheAdapter.defaultEnabled = root.defaultEnabled;
             cacheAdapter.animatedWallpapers = root.animatedWallpapers;
             cacheAdapter.animatedDir = root.animatedDir;
             cacheAdapter.staticColumns = root.staticColumns;
@@ -306,6 +310,10 @@ fi
         saveTimer.restart();
         if (path)
             root.optimizeAnimatedWallpaper(path);
+    }
+    function setDefaultEnabled(enabled) {
+        root.defaultEnabled = enabled;
+        saveTimer.restart();
     }
     function setStaticColumns(screenName, n) {
         var clamped = Math.max(1, n);

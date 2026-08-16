@@ -10,8 +10,8 @@ WidgetCapsule {
     id: root
 
     iconGlyph: IconConfig.power
-    labelText: "Power Menu"
-    panelName: "logout"
+    labelText: "Starward"
+    panelName: "starward"
     showLabel: baseShowLabel
 
     MouseArea {
@@ -19,6 +19,6 @@ WidgetCapsule {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Quickshell.execDetached(["keqing-shell", "logout"])
+        onClicked: Quickshell.execDetached(["keqing-shell", "starward"])
     }
 }

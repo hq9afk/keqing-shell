@@ -17,6 +17,7 @@ Command: `/usr/lib/qt6/bin/qmlformat --normalize --single-line-empty-objects --i
 - `qmldir` is not implemented, only `import qs.path.to.dir.contains.file`.
 - Add one blank line separating library imports and local module imports for all files.
 - Icons must be written as `"\uXXXX"`, do not render them.
+- Outermost component's id must be `root`
 
 ## QML commenting style
 - Add one-word comment before major code blocks to show which part it represents.

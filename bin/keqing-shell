@@ -37,10 +37,10 @@ cat <<'EOF'
         dock-all            Toggle dock (all monitors)
         launcher            Toggle launcher
         lock                Toggle lock screen
-        logout              Toggle logout screen
         matrix              Toggle matrix rain window
         overview            Toggle windows overview
         settings            Toggle settings panel
+        starward            Toggle starward screen
         visualizer          Toggle visualizer window
 EOF
 }
@@ -110,10 +110,10 @@ dock()          { _ipc dock toggle; }
 dock-all()      { _ipc dock toggleAll; }
 launcher()      { _ipc launcher; }
 lock()          { _ipc lock; }
-logout()        { _ipc logout; }
 matrix()        { _ipc matrix; }
 overview()      { _ipc overview; }
 settings()      { _ipc settings; }
+starward()      { _ipc starward; }
 visualizer()    { _ipc visualizer; }
 start-locked() {
     _check_installed

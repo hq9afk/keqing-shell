@@ -57,9 +57,9 @@ Item {
         fillMode: Image.PreserveAspectFit
         height: parent.height * 0.5
         smooth: true
-        source: WallpaperService.loaded && WallpaperService.animatedEnabled && animatedPlayer.optimizedPath === "" ? GlobalConfig.defaultWallpaper : ""
+        source: WallpaperService.loaded && WallpaperService.defaultEnabled && WallpaperService.animatedEnabled && animatedPlayer.optimizedPath === "" ? GlobalConfig.defaultWallpaper : ""
         sourceSize: Qt.size(0, height)
-        visible: WallpaperService.loaded && WallpaperService.animatedEnabled && animatedPlayer.optimizedPath === ""
+        visible: WallpaperService.loaded && WallpaperService.defaultEnabled && WallpaperService.animatedEnabled && animatedPlayer.optimizedPath === ""
         width: parent.width * 0.5
     }
 }

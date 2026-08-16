@@ -14,6 +14,48 @@ import qs.modules
 Scope {
     id: root
 
+    readonly property var widgets: ({
+            left: [
+                {
+                    "id": "Starward"
+                },
+                {
+                    "id": "Workspace"
+                },
+                {
+                    "id": "Dock"
+                }
+            ],
+            center: [
+                {
+                    "id": "Clock"
+                }
+            ],
+            right: [
+                {
+                    "id": "Tray"
+                },
+                {
+                    "id": "SystemMonitor"
+                },
+                {
+                    "id": "Network"
+                },
+                {
+                    "id": "Bluetooth"
+                },
+                {
+                    "id": "Volume"
+                },
+                {
+                    "id": "Battery",
+                },
+                {
+                    "id": "ControlCenter"
+                }
+            ]
+        })
+
     IpcHandler {
         function toggle() {
             var screenName = CompositorWorkspaceService.focusedScreenName();
@@ -46,7 +88,7 @@ Scope {
                 id: screenScope
 
                 required property var modelData
-                readonly property var screenWidgets: SettingsService._defaultWidgets
+                readonly property var screenWidgets: root.widgets
 
                 PanelWindow {
                     id: win

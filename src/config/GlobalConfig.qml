@@ -10,6 +10,9 @@ QtObject {
     // System
     readonly property string user: Quickshell.env("USER")
 
+    // Time Format
+    readonly property string timeFormat: "ddd yyyy-MM-dd hh:mm:ss"
+
     // Helper Function
     function asset(path) {
         return Qt.resolvedUrl("../assets/" + path);
@@ -27,12 +30,12 @@ QtObject {
 
     // Assets
     readonly property url defaultWallpaper: asset("default_wp.svg")
-    readonly property url inputEcho: asset("pwdelegate/1.png")
-    readonly property url logoutLogo: asset("gifs/logoutlogo.gif")
+    readonly property url inputEcho: asset("electro.png")
+    readonly property url starwardLogo: asset("gifs/starwardlogo.gif")
     readonly property url userPfp: asset("gifs/userpfp.gif")
     readonly property url pamConfigDir: asset("")
     readonly property string pamConfigFile: "pam.conf"
     function constellation(index) {
-        return asset("lmbullets/" + index + ".png");
+        return asset("constellation/C" + index + ".png");
     }
 }

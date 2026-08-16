@@ -14,13 +14,13 @@ ShellRoot {
     Idle {}
     Launcher {}
     Lock {}
-    Logout {}
     Matrix {}
     Notification {}
     OSD {}
     Overview {}
     Polkit {}
     Settings {}
+    Starward {}
     Visualizer {}
     Wallpaper {}
 }
