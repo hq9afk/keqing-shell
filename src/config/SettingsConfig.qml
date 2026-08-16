@@ -103,11 +103,6 @@ QtObject {
     readonly property int toggleTrackRadius: 10
     readonly property int toggleTrackWidth: 36
 
-    // ComboBox
-    readonly property int comboBoxHeight: 28
-    readonly property int comboBoxTextLeftMargin: 7
-    readonly property int comboBoxWidth: 160
-
     // Dropdown
     readonly property int dropdownMenuMaxHeight: 240
     readonly property int dropdownMenuPadding: 4

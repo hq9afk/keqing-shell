@@ -62,23 +62,12 @@ Scope {
                     }
 
                     Repeater {
-                        model: WallpaperService.animatedEnabled ? 0 : (WallpaperService.staticColumns[idleWindow.modelData.name] ?? 1)
+                        model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[idleWindow.modelData.name] ?? 1) : (WallpaperService.staticColumns[idleWindow.modelData.name] ?? 1)
 
-                        delegate: StaticRegion {
+                        delegate: WallpaperColumn {
                             required property int index
 
-                            columnCount: WallpaperService.staticColumns[idleWindow.modelData.name] ?? 1
-                            columnIndex: index
-                            screenName: idleWindow.modelData.name
-                        }
-                    }
-                    Repeater {
-                        model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[idleWindow.modelData.name] ?? 1) : 0
-
-                        delegate: AnimatedRegion {
-                            required property int index
-
-                            columnCount: WallpaperService.animatedColumns[idleWindow.modelData.name] ?? 1
+                            columnCount: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[idleWindow.modelData.name] ?? 1) : (WallpaperService.staticColumns[idleWindow.modelData.name] ?? 1)
                             columnIndex: index
                             paused: !idleWindow.wallpaperShouldShow || idleWindow.blackoutShouldShow
                             screenName: idleWindow.modelData.name

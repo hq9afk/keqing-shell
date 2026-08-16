@@ -32,23 +32,12 @@ Scope {
                     top: true
                 }
                 Repeater {
-                    model: WallpaperService.animatedEnabled ? 0 : (WallpaperService.staticColumns[screenWindow.modelData.name] ?? 1)
+                    model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[screenWindow.modelData.name] ?? 1) : (WallpaperService.staticColumns[screenWindow.modelData.name] ?? 1)
 
-                    delegate: StaticRegion {
+                    delegate: WallpaperColumn {
                         required property int index
 
-                        columnCount: WallpaperService.staticColumns[screenWindow.modelData.name] ?? 1
-                        columnIndex: index
-                        screenName: screenWindow.modelData.name
-                    }
-                }
-                Repeater {
-                    model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[screenWindow.modelData.name] ?? 1) : 0
-
-                    delegate: AnimatedRegion {
-                        required property int index
-
-                        columnCount: WallpaperService.animatedColumns[screenWindow.modelData.name] ?? 1
+                        columnCount: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[screenWindow.modelData.name] ?? 1) : (WallpaperService.staticColumns[screenWindow.modelData.name] ?? 1)
                         columnIndex: index
                         paused: screenWindow.screensaverActive || LockService.locked
                         screenName: screenWindow.modelData.name

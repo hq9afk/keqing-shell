@@ -164,7 +164,7 @@ Scope {
                 }
 
                 // Input
-                PasswordInput {
+                Input {
                     id: passwordField
 
                     anchors.horizontalCenter: parent.horizontalCenter

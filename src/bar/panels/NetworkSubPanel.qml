@@ -93,7 +93,7 @@ WidgetPanel {
                 height: BarConfig.panelDialogSpacerHeight
                 width: parent.width
             }
-            PasswordInput {
+            Input {
                 id: pwdIn
 
                 border.color: pwdIn.fieldActiveFocus ? ColorConfig.accent : ColorConfig.textAlpha15

@@ -1,9 +1,9 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 
+import qs.elements
 import qs.config
 
 ColumnLayout {
@@ -59,26 +59,22 @@ ColumnLayout {
                 text: LauncherConfig.modeIcons[searchBarInst.mode] || ""
             }
         }
-        TextField {
+        Input {
             id: input
 
             Layout.fillWidth: true
             Layout.preferredHeight: searchBarInst.size
-            color: ColorConfig.text
-            focus: true
-            font.family: FontConfig.fontFamily
-            font.pixelSize: LauncherConfig.searchbarFontPx
-            leftPadding: LauncherConfig.searchbarPadding
-            rightPadding: LauncherConfig.searchbarPadding
-            verticalAlignment: Text.AlignVCenter
+            border.color: ColorConfig.accent
+            border.width: LauncherConfig.searchbarBorderWidth
+            color: "transparent"
+            fontSize: LauncherConfig.searchbarFontPx
+            horizontalAlignment: Text.AlignLeft
+            horizontalPadding: LauncherConfig.searchbarPadding
+            password: false
+            radius: LauncherConfig.searchbarRadius
+            selectByMouse: true
+            showCursor: true
             z: 2
-
-            background: Rectangle {
-                border.color: ColorConfig.accent
-                border.width: LauncherConfig.searchbarBorderWidth
-                color: "transparent"
-                radius: LauncherConfig.searchbarRadius
-            }
         }
     }
     ResultsList {

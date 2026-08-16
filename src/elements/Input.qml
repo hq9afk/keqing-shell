@@ -16,10 +16,14 @@ Rectangle {
     property bool failed: false
     readonly property alias fieldActiveFocus: field.activeFocus
     property real fontSize: 12
+    property int horizontalAlignment: Text.AlignHCenter
+    property real horizontalPadding: 0
     property bool keepFocus: false
+    property bool password: true
     property string placeholder: ""
     property bool selectByMouse: false
-    readonly property alias text: field.text
+    property bool showCursor: false
+    property alias text: field.text
 
     signal accepted
 
@@ -35,12 +39,17 @@ Rectangle {
         id: field
 
         anchors.fill: parent
+        anchors.leftMargin: root.horizontalPadding
+        anchors.rightMargin: root.horizontalPadding
         color: "transparent"
-        echoMode: TextInput.NoEcho
+        echoMode: root.password ? TextInput.NoEcho : TextInput.Normal
         focus: true
+        font.family: FontConfig.fontFamily
+        font.pixelSize: root.fontSize
         selectByMouse: root.selectByMouse
+        verticalAlignment: TextInput.AlignVCenter
 
-        cursorDelegate: Item {}
+        cursorDelegate: root.showCursor ? cursorComponent : hiddenCursorComponent
 
         onAccepted: root.accepted()
         onFocusChanged: {
@@ -67,7 +76,16 @@ Rectangle {
             clip: true
 
             Row {
-                x: (parent.width - width) / 2
+                x: {
+                    switch (root.horizontalAlignment) {
+                    case Text.AlignLeft:
+                        return 0;
+                    case Text.AlignRight:
+                        return parent.width - width;
+                    default:
+                        return (parent.width - width) / 2;
+                    }
+                }
                 y: (parent.height - height) / 2
 
                 Behavior on x {
@@ -81,9 +99,13 @@ Rectangle {
                     model: dotModel
 
                     delegate: Item {
+                        id: dot
+
+                        required property int index
+
                         height: root.dotSize
                         transformOrigin: Item.Center
-                        width: root.dotSize
+                        width: root.password ? root.dotSize : Math.max(root.dotSize, letterText.implicitWidth)
 
                         NumberAnimation on opacity {
                             duration: root.animFastMs
@@ -113,6 +135,17 @@ Rectangle {
                                 anchors.fill: parent
                                 fillMode: Image.PreserveAspectFit
                                 source: GlobalConfig.inputEcho
+                                visible: root.password
+                            }
+                            Text {
+                                id: letterText
+
+                                anchors.centerIn: parent
+                                color: ColorConfig.text
+                                font.family: FontConfig.fontFamily
+                                font.pixelSize: root.fontSize
+                                text: field.text[dot.index] ?? ""
+                                visible: !root.password
                             }
                         }
                     }
@@ -143,5 +176,19 @@ Rectangle {
     }
     ListModel {
         id: dotModel
+    }
+    Component {
+        id: hiddenCursorComponent
+
+        Item {}
+    }
+    Component {
+        id: cursorComponent
+
+        Rectangle {
+            color: ColorConfig.text
+            visible: field.cursorVisible
+            width: 1
+        }
     }
 }

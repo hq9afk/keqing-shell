@@ -91,23 +91,12 @@ ModuleLoader {
                         color: "black"
 
                         Repeater {
-                            model: WallpaperService.animatedEnabled ? 0 : (WallpaperService.staticColumns[surface.screen?.name ?? ""] ?? 1)
+                            model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[surface.screen?.name ?? ""] ?? 1) : (WallpaperService.staticColumns[surface.screen?.name ?? ""] ?? 1)
 
-                            delegate: StaticRegion {
+                            delegate: WallpaperColumn {
                                 required property int index
 
-                                columnCount: WallpaperService.staticColumns[surface.screen?.name ?? ""] ?? 1
-                                columnIndex: index
-                                screenName: surface.screen?.name ?? ""
-                            }
-                        }
-                        Repeater {
-                            model: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[surface.screen?.name ?? ""] ?? 1) : 0
-
-                            delegate: AnimatedRegion {
-                                required property int index
-
-                                columnCount: WallpaperService.animatedColumns[surface.screen?.name ?? ""] ?? 1
+                                columnCount: WallpaperService.animatedEnabled ? (WallpaperService.animatedColumns[surface.screen?.name ?? ""] ?? 1) : (WallpaperService.staticColumns[surface.screen?.name ?? ""] ?? 1)
                                 columnIndex: index
                                 screenName: surface.screen?.name ?? ""
                             }
@@ -227,7 +216,7 @@ ModuleLoader {
                                 }
 
                                 // Password input
-                                PasswordInput {
+                                Input {
                                     id: passwordField
 
                                     anchors.horizontalCenter: parent.horizontalCenter

@@ -306,6 +306,16 @@ fi
         root.animatedEnabled = enabled;
         saveTimer.restart();
     }
+    function setAnimatedFillMode(screenName, columnIndex, mode) {
+        var updated = Object.assign({}, animatedFillModes);
+        var arr = (updated[screenName] || []).slice();
+        while (arr.length <= columnIndex)
+            arr.push("crop");
+        arr[columnIndex] = mode;
+        updated[screenName] = arr;
+        animatedFillModes = updated;
+        saveTimer.restart();
+    }
     function setAnimatedWallpaper(screenName, columnIndex, path) {
         var updated = Object.assign({}, animatedWallpapers);
         var arr = (updated[screenName] || []).slice();
@@ -317,16 +327,6 @@ fi
         saveTimer.restart();
         if (path)
             root.optimizeAnimatedWallpaper(path);
-    }
-    function setAnimatedFillMode(screenName, columnIndex, mode) {
-        var updated = Object.assign({}, animatedFillModes);
-        var arr = (updated[screenName] || []).slice();
-        while (arr.length <= columnIndex)
-            arr.push("crop");
-        arr[columnIndex] = mode;
-        updated[screenName] = arr;
-        animatedFillModes = updated;
-        saveTimer.restart();
     }
     function setDefaultEnabled(enabled) {
         root.defaultEnabled = enabled;
