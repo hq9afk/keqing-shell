@@ -57,7 +57,6 @@ Item {
             }
         }
 
-        // inlined StaticWallpaperSubtab (single use)
         Item {
             id: staticSubtab
 
@@ -148,7 +147,6 @@ Item {
             }
         }
 
-        // inlined AnimatedWallpaperSubtab (single use)
         Item {
             id: animatedSubtab
 

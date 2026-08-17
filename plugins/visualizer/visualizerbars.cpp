@@ -1,4 +1,6 @@
-#include "visualiserbars.hpp"
+#include "visualizerbars.hpp"
+
+#include "gradientinterp.hpp"
 
 #include <QSGGeometry>
 #include <QSGGeometryNode>
@@ -8,11 +10,11 @@
 
 namespace keqingshell {
 
-VisualiserBars::VisualiserBars(QQuickItem *parent) : QQuickItem(parent) {
+VisualizerBars::VisualizerBars(QQuickItem *parent) : QQuickItem(parent) {
     setFlag(ItemHasContents, true);
 }
 
-void VisualiserBars::advance(qreal dt) {
+void VisualizerBars::advance(qreal dt) {
     if (m_displayValues.isEmpty() || m_settled)
         return;
 
@@ -40,26 +42,7 @@ void VisualiserBars::advance(qreal dt) {
     }
 }
 
-static QColor interpolateGradient(const QList<QColor> &colors, qreal t) {
-    if (colors.isEmpty())
-        return Qt::white;
-    if (colors.size() == 1)
-        return colors[0];
-    t = std::clamp(t, 0.0, 1.0);
-    qreal scaled = t * (colors.size() - 1);
-    int idx = static_cast<int>(scaled);
-    if (idx >= colors.size() - 1)
-        return colors.last();
-    qreal frac = scaled - idx;
-    QColor c1 = colors[idx];
-    QColor c2 = colors[idx + 1];
-    return QColor(c1.red() + (c2.red() - c1.red()) * frac,
-                  c1.green() + (c2.green() - c1.green()) * frac,
-                  c1.blue() + (c2.blue() - c1.blue()) * frac,
-                  c1.alpha() + (c2.alpha() - c1.alpha()) * frac);
-}
-
-QSGNode *VisualiserBars::updatePaintNode(QSGNode *oldNode,
+QSGNode *VisualizerBars::updatePaintNode(QSGNode *oldNode,
                                          UpdatePaintNodeData *) {
     QSGGeometryNode *node = static_cast<QSGGeometryNode *>(oldNode);
     if (!node) {
@@ -83,8 +66,8 @@ QSGNode *VisualiserBars::updatePaintNode(QSGNode *oldNode,
 
     const qreal w = width();
     const qreal h = height();
-    const qreal barWidth =
-        (w - m_spacing * static_cast<qreal>(count - 1)) / static_cast<qreal>(count);
+    const qreal barWidth = (w - m_spacing * static_cast<qreal>(count - 1)) /
+                           static_cast<qreal>(count);
     const qreal slotWidth = barWidth + m_spacing;
 
     if (barWidth <= 0) {
@@ -131,8 +114,8 @@ QSGNode *VisualiserBars::updatePaintNode(QSGNode *oldNode,
     return node;
 }
 
-QVector<double> VisualiserBars::values() const { return m_targetValues; }
-void VisualiserBars::setValues(const QVector<double> &values) {
+QVector<double> VisualizerBars::values() const { return m_targetValues; }
+void VisualizerBars::setValues(const QVector<double> &values) {
     m_targetValues = values;
     if (m_displayValues.size() != values.size())
         m_displayValues.resize(values.size(), 0.0);
@@ -142,29 +125,29 @@ void VisualiserBars::setValues(const QVector<double> &values) {
     }
     emit valuesChanged();
 }
-bool VisualiserBars::settled() const { return m_settled; }
-QList<QColor> VisualiserBars::gradientColors() const {
+bool VisualizerBars::settled() const { return m_settled; }
+QList<QColor> VisualizerBars::gradientColors() const {
     return m_gradientColors;
 }
-void VisualiserBars::setGradientColors(const QList<QColor> &colors) {
+void VisualizerBars::setGradientColors(const QList<QColor> &colors) {
     if (m_gradientColors == colors)
         return;
     m_gradientColors = colors;
     emit gradientColorsChanged();
     update();
 }
-qreal VisualiserBars::rounding() const { return m_rounding; }
-void VisualiserBars::setRounding(qreal rounding) { m_rounding = rounding; }
-qreal VisualiserBars::spacing() const { return m_spacing; }
-void VisualiserBars::setSpacing(qreal spacing) {
+qreal VisualizerBars::rounding() const { return m_rounding; }
+void VisualizerBars::setRounding(qreal rounding) { m_rounding = rounding; }
+qreal VisualizerBars::spacing() const { return m_spacing; }
+void VisualizerBars::setSpacing(qreal spacing) {
     if (qFuzzyCompare(m_spacing, spacing))
         return;
     m_spacing = spacing;
     emit spacingChanged();
     update();
 }
-int VisualiserBars::animationDuration() const { return m_animationDuration; }
-void VisualiserBars::setAnimationDuration(int duration) {
+int VisualizerBars::animationDuration() const { return m_animationDuration; }
+void VisualizerBars::setAnimationDuration(int duration) {
     if (m_animationDuration == duration)
         return;
     m_animationDuration = duration;

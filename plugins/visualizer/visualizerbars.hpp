@@ -8,7 +8,7 @@
 
 namespace keqingshell {
 
-class VisualiserBars : public QQuickItem {
+class VisualizerBars : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
 
@@ -25,7 +25,7 @@ class VisualiserBars : public QQuickItem {
     Q_PROPERTY(bool settled READ settled NOTIFY settledChanged)
 
   public:
-    explicit VisualiserBars(QQuickItem *parent = nullptr);
+    explicit VisualizerBars(QQuickItem *parent = nullptr);
 
     Q_INVOKABLE void advance(qreal dt);
 

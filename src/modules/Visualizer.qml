@@ -87,7 +87,7 @@ ModuleLoader {
                         }
                     }
 
-                    VisualiserBars {
+                    VisualizerBars {
                         id: bars
 
                         anchors.bottom: parent.bottom

@@ -11,7 +11,8 @@ qt_add_qml_module(keqingshell-visualizer
     URI KeqingShell.Visualizer
     SOURCES
         pwspectrum.hpp pwspectrum.cpp
-        visualiserbars.hpp visualiserbars.cpp
+        visualizerbars.hpp visualizerbars.cpp
+        gradientinterp.hpp
 )
 
 target_compile_definitions(keqingshell-visualizer PRIVATE
