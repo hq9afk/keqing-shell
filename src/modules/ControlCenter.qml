@@ -128,25 +128,12 @@ ModuleLoader {
                                 spacing: ControlCenterConfig.panelColumnSpacing
                                 width: container.width
 
-                                // ---- Profile ----
                                 ProfileCard {}
-
-                                // ---- Battery ----
                                 BatteryCard {}
-
-                                // ---- System stats ----
                                 SystemStatsCard {}
-
-                                // ---- CPU temperature ----
                                 CpuTempCard {}
-
-                                // ---- GPU temperature ----
                                 GpuTempCard {}
-
-                                // ---- Media ----
                                 MediaCard {}
-
-                                // ---- Volume ----
                                 VolumeCard {}
                             }
                         }
