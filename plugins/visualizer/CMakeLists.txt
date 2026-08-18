@@ -6,13 +6,21 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PW REQUIRED libpipewire-0.3)
+find_package(Qt6 REQUIRED COMPONENTS ShaderTools)
 
 qt_add_qml_module(keqingshell-visualizer
     URI KeqingShell.Visualizer
     SOURCES
         pwspectrum.hpp pwspectrum.cpp
         visualizerbars.hpp visualizerbars.cpp
+        visualizerring.hpp visualizerring.cpp
         gradientinterp.hpp
+)
+
+qt_add_shaders(keqingshell-visualizer visualizersphereshaders
+    PREFIX /KeqingShell/Visualizer/shaders
+    BASE shaders
+    FILES shaders/spheresdf.frag
 )
 
 target_compile_definitions(keqingshell-visualizer PRIVATE
