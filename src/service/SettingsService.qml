@@ -16,7 +16,6 @@ QtObject {
         property var displays: ({})
         property JsonObject dock: JsonObject {
             property bool autohideEnabled: false
-            property int marginBottom: 10
         }
         property var dockDisplays: ({})
         property JsonObject idle: JsonObject {

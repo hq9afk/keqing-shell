@@ -46,11 +46,6 @@ ModuleLoader {
                         component: displaysTabComponent
                     },
                     {
-                        label: "Dock",
-                        icon: IconConfig.layoutBottombar,
-                        component: dockTabComponent
-                    },
-                    {
                         label: "Idle",
                         icon: IconConfig.moonStars,
                         component: idleTabComponent
@@ -94,11 +89,6 @@ ModuleLoader {
                     id: displaysTabComponent
 
                     DisplaysTab {}
-                }
-                Component {
-                    id: dockTabComponent
-
-                    DockTab {}
                 }
                 Component {
                     id: idleTabComponent

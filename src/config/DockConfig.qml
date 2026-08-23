@@ -4,7 +4,6 @@ pragma Singleton
 import QtQuick
 
 import qs.config
-import qs.service
 
 QtObject {
     // Capsule
@@ -23,7 +22,7 @@ QtObject {
 
     // Window
     readonly property real hiddenOpacity: 0
-    readonly property int marginBottom: SettingsService.adapter.dock.marginBottom
+    readonly property int marginBottom: 10
     readonly property int showAnimMs: 300
     readonly property real visibleOpacity: 1
 }

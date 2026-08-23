@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import Quickshell.Wayland
 
 import qs.service
@@ -56,30 +55,6 @@ Scope {
             ]
         })
 
-    IpcHandler {
-        function toggle() {
-            var screenName = CompositorWorkspaceService.focusedScreenName();
-            if (!screenName) {
-                SettingsService.adapter.bar.autohideEnabled = !SettingsService.adapter.bar.autohideEnabled;
-                SettingsService.save();
-                return;
-            }
-            var current = SettingsService.barValue(screenName, "autohideEnabled");
-            SettingsService.setBarOverrideEnabled(screenName, true);
-            SettingsService.setBarValue(screenName, "autohideEnabled", !current);
-        }
-        function toggleAll() {
-            var screenName = CompositorWorkspaceService.focusedScreenName();
-            var current = screenName ? SettingsService.barValue(screenName, "autohideEnabled") : SettingsService.adapter.bar.autohideEnabled;
-            var screens = Quickshell.screens;
-            for (var i = 0; i < screens.length; i++) {
-                SettingsService.setBarOverrideEnabled(screens[i].name, true);
-                SettingsService.setBarValue(screens[i].name, "autohideEnabled", !current);
-            }
-        }
-
-        target: "bar"
-    }
     Variants {
         model: Quickshell.screens
 
