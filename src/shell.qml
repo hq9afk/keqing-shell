@@ -9,7 +9,7 @@ ShellRoot {
     id: root
 
     Bar {}
-    ControlCenter {}
+    Dashboard {}
     Dock {}
     Idle {}
     Launcher {}

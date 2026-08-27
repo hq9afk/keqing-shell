@@ -75,18 +75,6 @@ ModuleLoader {
                     anchors.fill: parent
                     opacity: window.isOpen ? VisualizerConfig.visibleOpacity : VisualizerConfig.hiddenOpacity
 
-                    function bandAverage(values, start, end) {
-                        if (!values || values.length === 0)
-                            return 0;
-                        const n = values.length;
-                        const s = Math.max(0, Math.min(n, Math.floor(n * start)));
-                        const e = Math.max(s + 1, Math.min(n, Math.floor(n * end)));
-                        let sum = 0;
-                        for (let i = s; i < e; i++)
-                            sum += values[i];
-                        return sum / (e - s);
-                    }
-
                     Behavior on opacity {
                         NumberAnimation {
                             duration: VisualizerConfig.contentFadeAnimMs
@@ -114,59 +102,11 @@ ModuleLoader {
                         rounding: VisualizerConfig.barRadius
                         spacing: VisualizerConfig.barSpacing
                         values: spectrum.values
-                        visible: VisualizerConfig.mode === "bars"
 
                         FrameAnimation {
                             running: !bars.settled
 
                             onTriggered: bars.advance(frameTime)
-                        }
-                    }
-                    ShaderEffect {
-                        id: sphere
-
-                        property real bassEnergy: content.bandAverage(spectrum.values, 0, 1 / 3)
-                        property color colorFar: VisualizerConfig.sphereGradient[VisualizerConfig.sphereGradient.length - 1]
-                        property color colorNear: VisualizerConfig.sphereGradient[0]
-                        property real feather: VisualizerConfig.sphereFeather
-                        property real noiseAmplitude: VisualizerConfig.sphereNoiseAmplitude
-                        property real noiseFrequency: VisualizerConfig.sphereNoiseFrequency
-                        property real noiseTime: 0
-                        property real radiusAudioMultiplier: VisualizerConfig.sphereRadiusAudioMultiplier
-                        property vector2d resolution: Qt.vector2d(width, height)
-                        property real sphereRadius: VisualizerConfig.sphereRadius
-                        property real trebleEnergy: content.bandAverage(spectrum.values, 2 / 3, 1)
-
-                        anchors.fill: parent
-                        fragmentShader: "qrc:/KeqingShell/Visualizer/shaders/spheresdf.frag.qsb"
-                        opacity: VisualizerConfig.sphereOpacity
-                        visible: VisualizerConfig.mode === "sphere"
-
-                        FrameAnimation {
-                            running: sphere.visible
-
-                            onTriggered: sphere.noiseTime += frameTime * VisualizerConfig.sphereNoiseSpeed
-                        }
-                    }
-                    VisualizerRing {
-                        id: ring
-
-                        anchors.centerIn: parent
-                        animationDuration: VisualizerConfig.ringAnimDurationMs
-                        barThicknessRatio: VisualizerConfig.ringBarThicknessRatio
-                        baseRadius: VisualizerConfig.ringBaseRadius
-                        gradientColors: VisualizerConfig.ringGradient
-                        height: content.height
-                        maxBarHeight: VisualizerConfig.ringMaxBarHeight
-                        opacity: VisualizerConfig.ringOpacity
-                        values: spectrum.values.concat(spectrum.values.slice().reverse())
-                        visible: VisualizerConfig.mode === "ring"
-                        width: content.width
-
-                        FrameAnimation {
-                            running: !ring.settled
-
-                            onTriggered: ring.advance(frameTime)
                         }
                     }
                 }

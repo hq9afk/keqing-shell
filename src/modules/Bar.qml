@@ -47,10 +47,10 @@ Scope {
                     "id": "Volume"
                 },
                 {
-                    "id": "Battery",
+                    "id": "Battery"
                 },
                 {
-                    "id": "ControlCenter"
+                    "id": "Dashboard"
                 }
             ]
         })

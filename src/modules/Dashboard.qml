@@ -9,7 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 
 import qs.config
-import qs.controlcenter
+import qs.dashboard
 import qs.elements
 import qs.modules
 import qs.service
@@ -17,7 +17,7 @@ import qs.service
 ModuleLoader {
     id: root
 
-    module: "controlcenter"
+    module: "dashboard"
 
     sourceComp: Component {
         Scope {
@@ -95,7 +95,7 @@ ModuleLoader {
 
                         clip: true
                         height: Math.min(parent.height - y - BarConfig.barMarginH, content.implicitHeight)
-                        width: window.isOpen ? ControlCenterConfig.panelWidth : 0
+                        width: window.isOpen ? DashboardConfig.panelWidth : 0
                         x: parent.width - width - BarConfig.barMarginH
                         y: BarConfig.barMarginTop + BarConfig.barHeight + BarConfig.panelGap
 
@@ -125,7 +125,7 @@ ModuleLoader {
                             Column {
                                 id: col
 
-                                spacing: ControlCenterConfig.panelColumnSpacing
+                                spacing: DashboardConfig.panelColumnSpacing
                                 width: container.width
 
                                 ProfileCard {}
@@ -148,6 +148,6 @@ ModuleLoader {
             root.toggle();
         }
 
-        target: "controlcenter"
+        target: "dashboard"
     }
 }

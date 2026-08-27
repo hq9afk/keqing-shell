@@ -9,9 +9,9 @@ import qs.config
 WidgetCapsule {
     id: root
 
-    iconGlyph: IconConfig.controlCenter
+    iconGlyph: IconConfig.dashboard
     labelText: GlobalConfig.user
-    panelName: "controlcenter"
+    panelName: "dashboard"
     showLabel: baseShowLabel
 
     MouseArea {
@@ -19,6 +19,6 @@ WidgetCapsule {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Quickshell.execDetached(["keqing-shell", "controlcenter"])
+        onClicked: Quickshell.execDetached(["keqing-shell", "dashboard"])
     }
 }

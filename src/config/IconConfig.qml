@@ -68,8 +68,8 @@ QtObject {
     readonly property string refresh: "\ueb13"
 
     // System
-    readonly property string controlCenter: "\uec42"
     readonly property string cpu: "\uef8e"
+    readonly property string dashboard: "\uec42"
     readonly property string folder: "\ueaad"
     readonly property string folderOpen: "\ufaf7"
     readonly property string gpu: "\uef8d"

@@ -9,7 +9,7 @@ import qs.config
 Item {
     id: root
 
-    readonly property int _thumbSize: ControlCenterConfig.mediaThumbSize
+    readonly property int _thumbSize: DashboardConfig.mediaThumbSize
 
     clip: true
     height: mediaCardRect.height
@@ -27,23 +27,23 @@ Item {
         id: mediaCardRect
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + mediaHdr.height + ControlCenterConfig.cardHeaderContentGap + (ctrlRow.y + ctrlRow.height) + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + mediaHdr.height + DashboardConfig.cardHeaderContentGap + (ctrlRow.y + ctrlRow.height) + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: mediaHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -62,11 +62,11 @@ Item {
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: mediaHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Item {
                 id: topRow
@@ -83,7 +83,7 @@ Item {
                     clip: true
                     color: ColorConfig.overlay
                     height: root._thumbSize
-                    radius: ControlCenterConfig.mediaThumbRadius
+                    radius: DashboardConfig.mediaThumbRadius
                     width: root._thumbSize
 
                     anchors {
@@ -108,11 +108,11 @@ Item {
                 Column {
                     id: titleCol
 
-                    spacing: ControlCenterConfig.mediaTitleSpacing
+                    spacing: DashboardConfig.mediaTitleSpacing
 
                     anchors {
                         left: thumb.right
-                        leftMargin: ControlCenterConfig.mediaTitleLeftMargin
+                        leftMargin: DashboardConfig.mediaTitleLeftMargin
                         right: parent.right
                         verticalCenter: parent.verticalCenter
                     }
@@ -135,13 +135,13 @@ Item {
             Item {
                 id: progressRow
 
-                height: ControlCenterConfig.mediaProgressRowHeight
+                height: DashboardConfig.mediaProgressRowHeight
 
                 anchors {
                     left: parent.left
                     right: parent.right
                     top: topRow.bottom
-                    topMargin: ControlCenterConfig.mediaProgressTopMargin
+                    topMargin: DashboardConfig.mediaProgressTopMargin
                 }
                 Text {
                     color: ColorConfig.textDim
@@ -158,23 +158,23 @@ Item {
             Item {
                 id: ctrlRow
 
-                height: ControlCenterConfig.mediaCtrlRowHeight
+                height: DashboardConfig.mediaCtrlRowHeight
 
                 anchors {
                     left: parent.left
                     right: parent.right
                     top: progressRow.bottom
-                    topMargin: ControlCenterConfig.mediaCtrlTopMargin
+                    topMargin: DashboardConfig.mediaCtrlTopMargin
                 }
                 Row {
                     anchors.centerIn: parent
-                    spacing: ControlCenterConfig.mediaCtrlSpacing
+                    spacing: DashboardConfig.mediaCtrlSpacing
 
                     Rectangle {
                         color: prevMa.containsMouse ? ColorConfig.overlay : "transparent"
-                        height: ControlCenterConfig.mediaSideBtnSize
-                        radius: ControlCenterConfig.mediaSideBtnRadius
-                        width: ControlCenterConfig.mediaSideBtnSize
+                        height: DashboardConfig.mediaSideBtnSize
+                        radius: DashboardConfig.mediaSideBtnRadius
+                        width: DashboardConfig.mediaSideBtnSize
 
                         Text {
                             anchors.centerIn: parent
@@ -196,9 +196,9 @@ Item {
                     }
                     Rectangle {
                         color: playMa.containsMouse ? ColorConfig.overlay : ColorConfig.overlay
-                        height: ControlCenterConfig.mediaPlayBtnSize
-                        radius: ControlCenterConfig.mediaPlayBtnRadius
-                        width: ControlCenterConfig.mediaPlayBtnSize
+                        height: DashboardConfig.mediaPlayBtnSize
+                        radius: DashboardConfig.mediaPlayBtnRadius
+                        width: DashboardConfig.mediaPlayBtnSize
 
                         Text {
                             anchors.centerIn: parent
@@ -219,9 +219,9 @@ Item {
                     }
                     Rectangle {
                         color: nextMa.containsMouse ? ColorConfig.overlay : "transparent"
-                        height: ControlCenterConfig.mediaSideBtnSize
-                        radius: ControlCenterConfig.mediaSideBtnRadius
-                        width: ControlCenterConfig.mediaSideBtnSize
+                        height: DashboardConfig.mediaSideBtnSize
+                        radius: DashboardConfig.mediaSideBtnRadius
+                        width: DashboardConfig.mediaSideBtnSize
 
                         Text {
                             anchors.centerIn: parent

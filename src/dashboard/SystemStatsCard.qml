@@ -25,23 +25,23 @@ Item {
         id: systemStatsCardRect
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + systemStatsHdr.height + ControlCenterConfig.cardHeaderContentGap + statsCol.implicitHeight + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + systemStatsHdr.height + DashboardConfig.cardHeaderContentGap + statsCol.implicitHeight + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: systemStatsHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -60,16 +60,16 @@ Item {
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: systemStatsHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Column {
                 id: statsCol
 
-                spacing: ControlCenterConfig.statsSpacing
+                spacing: DashboardConfig.statsSpacing
 
                 anchors {
                     left: parent.left
@@ -77,10 +77,10 @@ Item {
                 }
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: ControlCenterConfig.statsColumnGap
+                    spacing: DashboardConfig.statsColumnGap
 
                     Column {
-                        spacing: ControlCenterConfig.statsGaugeLabelSpacing
+                        spacing: DashboardConfig.statsGaugeLabelSpacing
 
                         ArcGauge {
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -97,7 +97,7 @@ Item {
                         }
                     }
                     Column {
-                        spacing: ControlCenterConfig.statsGaugeLabelSpacing
+                        spacing: DashboardConfig.statsGaugeLabelSpacing
                         visible: SystemStatService.gpuAvailable
                         width: visible ? implicitWidth : 0
 
@@ -116,7 +116,7 @@ Item {
                         }
                     }
                     Column {
-                        spacing: ControlCenterConfig.statsGaugeLabelSpacing
+                        spacing: DashboardConfig.statsGaugeLabelSpacing
 
                         ArcGauge {
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -133,7 +133,7 @@ Item {
                         }
                     }
                     Column {
-                        spacing: ControlCenterConfig.statsGaugeLabelSpacing
+                        spacing: DashboardConfig.statsGaugeLabelSpacing
 
                         ArcGauge {
                             anchors.horizontalCenter: parent.horizontalCenter

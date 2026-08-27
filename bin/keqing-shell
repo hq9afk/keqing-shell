@@ -15,15 +15,12 @@ cat <<'EOF'
     Usage: keqing-shell <command> [args]
            keqing-shell           Start shell (daemonized), locking on first start
 
-    Setup:
-        build               Build and install the C++ plugins (requires sudo)
-        link                Symlink src/ into /etc/xdg/quickshell/ and script into /usr/local/bin/
-        unlink              Remove both symlinks
+    Install/uninstall: run dist/install.sh or dist/uninstall.sh from the repo.
 
     Shell operations:
         debug               Run keqing-shell in debug mode
         kill                Kill keqing-shell
-        restart [debug] [rebuild] Kill and relaunch keqing-shell (debug: show output, rebuild: rebuild plugins first)
+        restart [debug]     Kill and relaunch keqing-shell (debug: show output)
         reset               Kill, clear all cache/config, and relaunch
         track               Run quickshell under heaptrack
         help                Show this help message
@@ -32,7 +29,7 @@ cat <<'EOF'
         ipc                 Show all available IPC routes
         bar                 Toggle bar (focused monitor)
         bar-all             Toggle bar (all monitors)
-        controlcenter       Toggle control center
+        dashboard           Toggle dashboard
         dock                Toggle dock
         dock-all            Toggle dock (all monitors)
         launcher            Toggle launcher
@@ -44,7 +41,6 @@ cat <<'EOF'
         visualizer          Toggle visualizer window
 EOF
 }
-_here() { cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd; }
 _qs()  { MALLOC_ARENA_MAX=2 quickshell -c keqing-shell "$@"; }
 _ipc() {
     [[ -n "${1:-}" ]] || { _qs ipc show; return; }
@@ -61,16 +57,14 @@ debug() { _qs; }
 kill() { _qs kill >/dev/null 2>&1; }
 force-kill() { killall quickshell; }
 restart() {
-    local _debug=0 _rebuild=0 _arg
+    local _debug=0 _arg
     for _arg in "$@"; do
         case "$_arg" in
             debug) _debug=1 ;;
-            rebuild) _rebuild=1 ;;
         esac
     done
     _qs kill >/dev/null 2>&1 || true
     sleep 1
-    [[ $_rebuild -eq 1 ]] && build
     [[ $_debug -eq 1 ]] && _qs || _qs -d >/dev/null 2>&1
 }
 reset() {
@@ -82,22 +76,6 @@ reset() {
     rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/quickshell" "${XDG_CACHE_HOME:-$HOME/.cache}/keqing-shell" "${XDG_CONFIG_HOME:-$HOME/.config}/keqing-shell"
     _qs -d >/dev/null 2>&1
 }
-build() {
-    local _root; _root="$(cd "$(_here)/.." && pwd)"
-    cmake -B "$_root/plugins/build" -DCMAKE_INSTALL_PREFIX=/usr "$_root/plugins"
-    cmake --build "$_root/plugins/build"
-    sudo cmake --install "$_root/plugins/build"
-    rm -rf "$_root/plugins/build"
-}
-link() {
-    local _src; _src="$(cd "$(_here)/.." && pwd)/src"
-    local _bin; _bin="$(_here)/keqing-shell"
-    sudo mkdir -p /etc/xdg/quickshell
-    sudo rm -f /etc/xdg/quickshell/keqing-shell
-    sudo ln -s "$_src" /etc/xdg/quickshell/keqing-shell
-    sudo ln -sf "$_bin" /usr/local/bin/keqing-shell
-}
-unlink() { sudo rm -f /etc/xdg/quickshell/keqing-shell /usr/local/bin/keqing-shell; }
 track() {
     deps heaptrack || _die heaptrack not found 
     heaptrack quickshell -c keqing-shell
@@ -105,7 +83,7 @@ track() {
 ipc()           { _ipc; }
 bar()           { _ipc bar toggle; }
 bar-all()       { _ipc bar toggleAll; }
-controlcenter() { _ipc controlcenter; }
+dashboard()     { _ipc dashboard; }
 dock()          { _ipc dock toggle; }
 dock-all()      { _ipc dock toggleAll; }
 launcher()      { _ipc launcher; }
@@ -138,9 +116,6 @@ esac
 declare -f "$_cmd" >/dev/null 2>&1 || _die "command not found: $_cmd"
 [[ "$_cmd" != _* ]] || _die "command not permitted: $_cmd"
 
-case "$_cmd" in
-    build|link|unlink) ;;
-    *) _check_installed ;;
-esac
+_check_installed
 
 "$_cmd" "$@"

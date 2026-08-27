@@ -24,23 +24,23 @@ Item {
         id: gpuTempCardRect
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + gpuTempHdr.height + ControlCenterConfig.cardHeaderContentGap + ControlCenterConfig.tempRowHeight + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + gpuTempHdr.height + DashboardConfig.cardHeaderContentGap + DashboardConfig.tempRowHeight + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: gpuTempHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -55,15 +55,15 @@ Item {
         Item {
             id: gpuTempContentArea
 
-            height: ControlCenterConfig.tempRowHeight
+            height: DashboardConfig.tempRowHeight
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: gpuTempHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Text {
                 color: {

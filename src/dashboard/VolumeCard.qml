@@ -25,23 +25,23 @@ Item {
         id: volumeCardRect
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + volumeHdr.height + ControlCenterConfig.cardHeaderContentGap + volumeColumn.implicitHeight + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + volumeHdr.height + DashboardConfig.cardHeaderContentGap + volumeColumn.implicitHeight + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: volumeHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -60,16 +60,16 @@ Item {
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: volumeHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Column {
                 id: volumeColumn
 
-                spacing: ControlCenterConfig.volumeCardSpacing
+                spacing: DashboardConfig.volumeCardSpacing
 
                 anchors {
                     left: parent.left
@@ -80,11 +80,11 @@ Item {
                 Column {
                     id: outputRow
 
-                    spacing: ControlCenterConfig.volumeRowSpacing
+                    spacing: DashboardConfig.volumeRowSpacing
                     width: parent.width
 
                     Row {
-                        spacing: ControlCenterConfig.volumeLabelRowSpacing
+                        spacing: DashboardConfig.volumeLabelRowSpacing
                         width: parent.width
 
                         Text {
@@ -105,16 +105,16 @@ Item {
                                 var d = VolumeService.sink ? (VolumeService.sink.description || VolumeService.sink.name || "") : "";
                                 return d ? " — " + d : "";
                             }
-                            width: Math.min(implicitWidth, ControlCenterConfig.volumeDeviceTextMaxWidth)
+                            width: Math.min(implicitWidth, DashboardConfig.volumeDeviceTextMaxWidth)
                         }
                     }
                     Item {
-                        height: ControlCenterConfig.volumeSliderRowHeight
+                        height: DashboardConfig.volumeSliderRowHeight
                         width: parent.width
 
                         SliderBar {
                             dimmed: VolumeService.sinkMuted
-                            height: ControlCenterConfig.volumeSliderHeight
+                            height: DashboardConfig.volumeSliderHeight
                             maxValue: 100
                             value: VolumeService.sinkMuted ? 0 : VolumeService.sinkVolume * 100
 
@@ -123,7 +123,7 @@ Item {
                             anchors {
                                 left: parent.left
                                 right: outputPct.left
-                                rightMargin: ControlCenterConfig.volumeSliderPctGap
+                                rightMargin: DashboardConfig.volumeSliderPctGap
                                 verticalCenter: parent.verticalCenter
                             }
                         }
@@ -135,11 +135,11 @@ Item {
                             font.pixelSize: FontConfig.fontBody
                             horizontalAlignment: Text.AlignRight
                             text: VolumeService.sinkMuted ? "muted" : Math.round(VolumeService.sinkVolume * 100) + "%"
-                            width: ControlCenterConfig.volumePctTextWidth
+                            width: DashboardConfig.volumePctTextWidth
 
                             anchors {
                                 right: outputMuteBtn.left
-                                rightMargin: ControlCenterConfig.volumePctMuteGap
+                                rightMargin: DashboardConfig.volumePctMuteGap
                                 verticalCenter: parent.verticalCenter
                             }
                         }
@@ -147,9 +147,9 @@ Item {
                             id: outputMuteBtn
 
                             color: outputMuteMa.containsMouse ? ColorConfig.overlay : ColorConfig.overlay
-                            height: ControlCenterConfig.volumeMuteBtnSize
-                            radius: ControlCenterConfig.volumeMuteBtnRadius
-                            width: ControlCenterConfig.volumeMuteBtnSize
+                            height: DashboardConfig.volumeMuteBtnSize
+                            radius: DashboardConfig.volumeMuteBtnRadius
+                            width: DashboardConfig.volumeMuteBtnSize
 
                             anchors {
                                 right: parent.right
@@ -179,11 +179,11 @@ Item {
                 Column {
                     id: inputRow
 
-                    spacing: ControlCenterConfig.volumeRowSpacing
+                    spacing: DashboardConfig.volumeRowSpacing
                     width: parent.width
 
                     Row {
-                        spacing: ControlCenterConfig.volumeLabelRowSpacing
+                        spacing: DashboardConfig.volumeLabelRowSpacing
                         width: parent.width
 
                         Text {
@@ -204,16 +204,16 @@ Item {
                                 var d = VolumeService.source ? (VolumeService.source.description || VolumeService.source.name || "") : "";
                                 return d ? " — " + d : "";
                             }
-                            width: Math.min(implicitWidth, ControlCenterConfig.volumeDeviceTextMaxWidth)
+                            width: Math.min(implicitWidth, DashboardConfig.volumeDeviceTextMaxWidth)
                         }
                     }
                     Item {
-                        height: ControlCenterConfig.volumeSliderRowHeight
+                        height: DashboardConfig.volumeSliderRowHeight
                         width: parent.width
 
                         SliderBar {
                             dimmed: VolumeService.sourceMuted
-                            height: ControlCenterConfig.volumeSliderHeight
+                            height: DashboardConfig.volumeSliderHeight
                             maxValue: 100
                             value: VolumeService.sourceMuted ? 0 : VolumeService.sourceVolume * 100
 
@@ -222,7 +222,7 @@ Item {
                             anchors {
                                 left: parent.left
                                 right: inputPct.left
-                                rightMargin: ControlCenterConfig.volumeSliderPctGap
+                                rightMargin: DashboardConfig.volumeSliderPctGap
                                 verticalCenter: parent.verticalCenter
                             }
                         }
@@ -234,11 +234,11 @@ Item {
                             font.pixelSize: FontConfig.fontBody
                             horizontalAlignment: Text.AlignRight
                             text: VolumeService.sourceMuted ? "muted" : Math.round(VolumeService.sourceVolume * 100) + "%"
-                            width: ControlCenterConfig.volumePctTextWidth
+                            width: DashboardConfig.volumePctTextWidth
 
                             anchors {
                                 right: inputMuteBtn.left
-                                rightMargin: ControlCenterConfig.volumePctMuteGap
+                                rightMargin: DashboardConfig.volumePctMuteGap
                                 verticalCenter: parent.verticalCenter
                             }
                         }
@@ -246,9 +246,9 @@ Item {
                             id: inputMuteBtn
 
                             color: inputMuteMa.containsMouse ? ColorConfig.overlay : ColorConfig.overlay
-                            height: ControlCenterConfig.volumeMuteBtnSize
-                            radius: ControlCenterConfig.volumeMuteBtnRadius
-                            width: ControlCenterConfig.volumeMuteBtnSize
+                            height: DashboardConfig.volumeMuteBtnSize
+                            radius: DashboardConfig.volumeMuteBtnRadius
+                            width: DashboardConfig.volumeMuteBtnSize
 
                             anchors {
                                 right: parent.right

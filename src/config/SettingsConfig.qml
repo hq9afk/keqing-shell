@@ -51,9 +51,6 @@ QtObject {
     readonly property int selectorBorderWidth: 2
 
     // Tabs
-    readonly property int controlCenterCardContentSpacing: 8
-    readonly property int controlCenterLabelSpacing: 2
-    readonly property int controlCenterRowHeight: 50
     readonly property int fieldRadius: 4
     readonly property int generalTabRowHeight: 40
     readonly property int groupContentSpacingLg: 20

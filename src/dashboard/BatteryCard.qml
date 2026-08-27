@@ -32,23 +32,23 @@ Item {
         id: batteryCardRect
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + batteryHdr.height + ControlCenterConfig.cardHeaderContentGap + batRow.height + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + batteryHdr.height + DashboardConfig.cardHeaderContentGap + batRow.height + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: batteryHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -67,23 +67,23 @@ Item {
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: batteryHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Column {
                 id: batRow
 
-                spacing: ControlCenterConfig.batteryRowSpacing
+                spacing: DashboardConfig.batteryRowSpacing
 
                 anchors {
                     left: parent.left
                     right: parent.right
                 }
                 Row {
-                    spacing: ControlCenterConfig.batteryHeaderSpacing
+                    spacing: DashboardConfig.batteryHeaderSpacing
                     width: parent.width
 
                     Text {
@@ -113,7 +113,7 @@ Item {
                     }
                     Column {
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: ControlCenterConfig.batteryTextSpacing
+                        spacing: DashboardConfig.batteryTextSpacing
 
                         Text {
                             color: ColorConfig.text
@@ -144,8 +144,8 @@ Item {
                 }
                 Rectangle {
                     color: ColorConfig.textAlpha10
-                    height: ControlCenterConfig.batteryBarHeight
-                    radius: ControlCenterConfig.batteryBarRadius
+                    height: DashboardConfig.batteryBarHeight
+                    radius: DashboardConfig.batteryBarRadius
                     width: parent.width
 
                     Rectangle {
@@ -164,12 +164,12 @@ Item {
 
                         Behavior on color {
                             ColorAnimation {
-                                duration: ControlCenterConfig.batteryColorAnimMs
+                                duration: DashboardConfig.batteryColorAnimMs
                             }
                         }
                         Behavior on width {
                             NumberAnimation {
-                                duration: ControlCenterConfig.batteryWidthAnimMs
+                                duration: DashboardConfig.batteryWidthAnimMs
                             }
                         }
                     }

@@ -12,10 +12,10 @@ Rectangle {
     property string _uptime: ""
 
     border.color: ColorConfig.accent
-    border.width: ControlCenterConfig.profileBorderWidth
+    border.width: DashboardConfig.profileBorderWidth
     color: ColorConfig.overlay
-    height: profileMainCol.implicitHeight + ControlCenterConfig.profileVerticalPadding
-    radius: ControlCenterConfig.profileRadius
+    height: profileMainCol.implicitHeight + DashboardConfig.profileVerticalPadding
+    radius: DashboardConfig.profileRadius
     width: parent.width
 
     Process {
@@ -35,17 +35,17 @@ Rectangle {
     Column {
         id: profileMainCol
 
-        spacing: ControlCenterConfig.profileContentSpacing
-        y: ControlCenterConfig.profileTopPadding
+        spacing: DashboardConfig.profileContentSpacing
+        y: DashboardConfig.profileTopPadding
 
         anchors {
             left: parent.left
-            leftMargin: ControlCenterConfig.profileHorizontalPadding
+            leftMargin: DashboardConfig.profileHorizontalPadding
             right: parent.right
-            rightMargin: ControlCenterConfig.profileHorizontalPadding
+            rightMargin: DashboardConfig.profileHorizontalPadding
         }
         Item {
-            height: profileAvatar.height + ControlCenterConfig.profileAvatarGap + profileInfoCol.implicitHeight
+            height: profileAvatar.height + DashboardConfig.profileAvatarGap + profileInfoCol.implicitHeight
             width: parent.width
 
             // avatar
@@ -55,9 +55,9 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 borderWidth: BarConfig.logoBorderWidth
-                height: ControlCenterConfig.profileAvatarSize
+                height: DashboardConfig.profileAvatarSize
                 source: GlobalConfig.userPfp
-                width: ControlCenterConfig.profileAvatarSize
+                width: DashboardConfig.profileAvatarSize
             }
 
             // info
@@ -66,8 +66,8 @@ Rectangle {
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: profileAvatar.bottom
-                anchors.topMargin: ControlCenterConfig.profileAvatarGap
-                spacing: ControlCenterConfig.profileInfoSpacing
+                anchors.topMargin: DashboardConfig.profileAvatarGap
+                spacing: DashboardConfig.profileInfoSpacing
 
                 Text {
                     color: ColorConfig.text
@@ -76,7 +76,7 @@ Rectangle {
                     font.pixelSize: FontConfig.fontBody + 1
                     horizontalAlignment: Text.AlignHCenter
                     text: GlobalConfig.user
-                    width: ControlCenterConfig.profileInfoTextWidth
+                    width: DashboardConfig.profileInfoTextWidth
                 }
                 Text {
                     color: ColorConfig.textDim
@@ -85,7 +85,7 @@ Rectangle {
                     font.pixelSize: FontConfig.fontBody - 1
                     horizontalAlignment: Text.AlignHCenter
                     text: root._uptime
-                    width: ControlCenterConfig.profileInfoTextWidth
+                    width: DashboardConfig.profileInfoTextWidth
                 }
             }
 
@@ -108,7 +108,7 @@ Rectangle {
                     id: settingsHover
 
                     anchors.fill: parent
-                    anchors.margins: -ControlCenterConfig.profileSettingsHitPadding
+                    anchors.margins: -DashboardConfig.profileSettingsHitPadding
                     cursorShape: Qt.PointingHandCursor
                     hoverEnabled: true
 

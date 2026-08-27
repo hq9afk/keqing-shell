@@ -60,26 +60,26 @@ Item {
     Rectangle {
         id: cpuTempCardRect
 
-        readonly property real cpuTempContentHeight: ControlCenterConfig.tempRowHeight + (root._hasCores ? ControlCenterConfig.cpuTempGridTopMargin + root._rows * ControlCenterConfig.cpuCoreItemHeight + Math.max(0, root._rows - 1) * ControlCenterConfig.cpuCoreRowSpacing : 0)
+        readonly property real cpuTempContentHeight: DashboardConfig.tempRowHeight + (root._hasCores ? DashboardConfig.cpuTempGridTopMargin + root._rows * DashboardConfig.cpuCoreItemHeight + Math.max(0, root._rows - 1) * DashboardConfig.cpuCoreRowSpacing : 0)
 
         border.color: ColorConfig.accent
-        border.width: ControlCenterConfig.cardBorderWidth
+        border.width: DashboardConfig.cardBorderWidth
         color: ColorConfig.overlay
-        height: ControlCenterConfig.cardTopPadding + cpuTempHdr.height + ControlCenterConfig.cardHeaderContentGap + cpuTempContentHeight + ControlCenterConfig.cardBottomPadding
-        radius: ControlCenterConfig.cardRadius
+        height: DashboardConfig.cardTopPadding + cpuTempHdr.height + DashboardConfig.cardHeaderContentGap + cpuTempContentHeight + DashboardConfig.cardBottomPadding
+        radius: DashboardConfig.cardRadius
         width: parent.width
 
         Item {
             id: cpuTempHdr
 
-            height: ControlCenterConfig.cardHeaderHeight
-            y: ControlCenterConfig.cardTopPadding
+            height: DashboardConfig.cardHeaderHeight
+            y: DashboardConfig.cardTopPadding
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
             }
             Text {
                 anchors.left: parent.left
@@ -98,11 +98,11 @@ Item {
 
             anchors {
                 left: parent.left
-                leftMargin: ControlCenterConfig.cardHorizontalPadding
+                leftMargin: DashboardConfig.cardHorizontalPadding
                 right: parent.right
-                rightMargin: ControlCenterConfig.cardHorizontalPadding
+                rightMargin: DashboardConfig.cardHorizontalPadding
                 top: cpuTempHdr.bottom
-                topMargin: ControlCenterConfig.cardHeaderContentGap
+                topMargin: DashboardConfig.cardHeaderContentGap
             }
             Text {
                 id: avgTemp
@@ -128,16 +128,16 @@ Item {
             Grid {
                 id: coreGrid
 
-                columnSpacing: ControlCenterConfig.cpuCoreColumnSpacing
-                columns: ControlCenterConfig.cpuCoreColumns
-                rowSpacing: ControlCenterConfig.cpuCoreRowSpacing
+                columnSpacing: DashboardConfig.cpuCoreColumnSpacing
+                columns: DashboardConfig.cpuCoreColumns
+                rowSpacing: DashboardConfig.cpuCoreRowSpacing
                 visible: root._hasCores
 
                 anchors {
                     left: parent.left
                     right: parent.right
                     top: avgTemp.bottom
-                    topMargin: ControlCenterConfig.cpuTempGridTopMargin
+                    topMargin: DashboardConfig.cpuTempGridTopMargin
                 }
                 Repeater {
                     model: coreModel
@@ -149,9 +149,9 @@ Item {
                         required property real temp
 
                         color: ColorConfig.textAlpha08
-                        height: ControlCenterConfig.cpuCoreItemHeight
-                        radius: ControlCenterConfig.cpuCoreItemRadius
-                        width: (coreGrid.width - coreGrid.columnSpacing) / ControlCenterConfig.cpuCoreColumns
+                        height: DashboardConfig.cpuCoreItemHeight
+                        radius: DashboardConfig.cpuCoreItemRadius
+                        width: (coreGrid.width - coreGrid.columnSpacing) / DashboardConfig.cpuCoreColumns
 
                         Text {
                             color: ColorConfig.textDim
@@ -161,7 +161,7 @@ Item {
 
                             anchors {
                                 left: parent.left
-                                leftMargin: ControlCenterConfig.cpuCoreTextMargin
+                                leftMargin: DashboardConfig.cpuCoreTextMargin
                                 verticalCenter: parent.verticalCenter
                             }
                         }
@@ -180,7 +180,7 @@ Item {
 
                             anchors {
                                 right: parent.right
-                                rightMargin: ControlCenterConfig.cpuCoreTextMargin
+                                rightMargin: DashboardConfig.cpuCoreTextMargin
                                 verticalCenter: parent.verticalCenter
                             }
                         }
