@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Controls
 
 import qs.elements
-import qs.settings
+import qs.modules.settings
 import qs.config
 
 Item {

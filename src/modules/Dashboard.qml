@@ -9,7 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 
 import qs.config
-import qs.dashboard
+import qs.modules.dashboard
 import qs.elements
 import qs.modules
 import qs.service

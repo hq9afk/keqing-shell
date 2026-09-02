@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Io
 
 import qs.modules
-import qs.overview.layout
-import qs.overview.service
+import qs.modules.overview.layout
+import qs.modules.overview.service
 
 ModuleLoader {
     id: root

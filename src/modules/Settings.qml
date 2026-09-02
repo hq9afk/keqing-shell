@@ -10,7 +10,7 @@ import qs.elements
 import qs.config
 import qs.modules
 import qs.service
-import qs.settings
+import qs.modules.settings
 
 ModuleLoader {
     id: root

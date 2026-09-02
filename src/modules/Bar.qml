@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs.service
-import qs.bar.components
-import qs.bar.popups
+import qs.modules.bar.components
+import qs.modules.bar.popups
 import qs.config
 import qs.modules
 

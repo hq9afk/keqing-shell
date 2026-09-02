@@ -7,7 +7,7 @@ import Quickshell.Io
 
 import qs.elements
 import qs.config
-import qs.settings
+import qs.modules.settings
 import qs.service
 
 Rectangle {

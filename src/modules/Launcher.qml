@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-import qs.launcher
+import qs.modules.launcher
 import qs.modules
 
 ModuleLoader {
